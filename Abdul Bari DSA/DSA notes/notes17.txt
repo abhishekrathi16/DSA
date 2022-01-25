@@ -1,11 +1,58 @@
-jADJLsDH;Ocjp
-KCP;
-;c;C,AXc.'xb;kn
+lec 128
+8.
+To find a pair of elements in a sorted array whose sum is equal to k
 
-SCASLCSC
+array is A[]={1,3,4,5,6,8,9,10,12,14}
+find a,b such that a+b=10
+n=10 here
 
-AKCLC'l
-SCASLCSCAJCOHAc;k
+here since the array is sorted we will take 2 variable i and j
+j=n-1 and i=0
+we will check if A[i]+A[j]=10 or not
+if the sum is greater than 10, then we will decrement j and keep i as it i
+as soon as the sum is 10 we increment i and decrement j by 1 and check again
+if sum is less than 10, we increment i by 1
+
+when we get a pair we will print the elements and then keep repeating the procedure until i and j bcm equal
+
+code:
+
+i=0,j=n-1;
+while(i<j){
+    if(A[i]+A[j]==k){
+        printf("%d + %d= %d",A[i],A[j],k);
+        i++;
+        j--;
+    }else if(A[i]+A[j]<k){
+        i++;
+    }else{
+        j--;
+    }
+}
+
+since we are using while loop here only once the time complexity is O(n)
 
 
-scC;KCk;
+9. Finding MAX and MIN in a single scan 
+A[]={5,8,3,9,6,2,10,7,-1,4}
+first we assign max and min equal to A[0]
+then we loop from i=1 to i=n-1
+we check if the next element is less than min or greater than max
+if  they are, then we update max and min
+we will only check if it is less than minimum first,if it isnt we will then check if it is greater than max
+
+min=max=A[o];
+for(i=0;i<n;i++){
+    if(A[i]<min){
+        min=A[i];
+    }else if(A[i]>max){
+        max=A[i];
+    }
+}
+
+time taken here is of the order of O(n)
+
+here the number of conditions checked everytime is maximum 2,ie when the if part fails and then code moves on to the else if part
+so the number of comparisions here is 2(n-1), this is the worst case
+
+but if the number of conditions checked everytime is just 1, that is only 1 then the number of comparisions here is (n-1), this is the best case

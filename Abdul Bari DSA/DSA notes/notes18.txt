@@ -1,0 +1,146 @@
+Strings
+
+lec 131
+
+Charecter set - It is a set of charecters supported by a language
+We know that a computer system works on binary numbers
+SO they cant access charecters directly
+so we assign different numbers to these charecters and this set is followed by every electronic mchine
+
+for english alphabets we use ASCII code (American Standard Code for Information Interchange)
+It is made by ANSI and is ISO Standard
+
+for different languages,like Hindi, Japanese and etc we have other ISO Standard and they are called Unicodes
+
+ASCII codes:
+A-Z are represented by 65-90
+a-z are represented by 97-122
+0-9 are represented by 48-57
+there are ascii codes for spcl charecters like (),*,-,+....
+
+Escape: 27
+Enter: 10
+Space : 13
+
+So all ascii codes are represented by numbers from 0 to 127
+every charecter here can be represented in max 7 bits in memory
+in RAM they are allocated 1 byte(8 bits)
+
+Unicode is a superset of all different charecters in all international languages, hence ASCII code is a subset of Unicode
+They are represented in 4x4 bits(2 bytes) of Hexadecimal values
+
+go to Unicode.org to find out different unicodes 
+
+
+How to declare a charecter type array or a string in C/C++
+
+char temp; //it is one single charecter variable, it takes only 1 byte of memory
+They are represented in single quotes ''
+
+temp='A';
+or temp='B'
+
+but temp = 'AB' is wrong
+just one charecter can be used
+
+to print or scanf, we use %c as a format specifier 
+printf("%c",temp);
+in C++, we can just use cout<<temp; or cin>>temp;
+
+Array of charecters
+char X[5]; //declares an array of 5 charecters
+char X[5]={'A','B','C','D','E'}; //declare and init together
+char X[]={'A','B','C','D','E'}; //declare and init together without mentioning the size
+
+or we can create the same array with this:
+char X[]={65,66,67,68,69};
+
+char X[5]={'A','B'};
+initialises the first 2 char as A and B and others with 0
+
+
+string is nothing but a set/array of charecters
+if we declare a name like this:
+char name[10]={'J','O','H','N'};
+
+here the length of the array is 10
+but the string length is 4 only
+where does the string end then?
+the point where string ends is marked with a null charecter or '\0'
+this is called a string delimiter or a EOF
+also called string terminator
+
+This is only for C/C++
+in Java we dont have an EOF
+
+hence the array is like this :
+char name[10]={'J','O','H','N','\0'};
+char name[]={'J','O','H','N','\0'}; //here the size isnt mentioned so the array is of 5 memory bytes only since \0 also takes up Space
+
+we can also declare a string as this:
+char name[10]="John";
+
+in C,
+to print a string:
+printf("%s",name); //%s is used to print a name
+to scan a string:
+scanf("%s",name);  //remember we dont use & here
+
+in C++
+cin>>name;
+cout<<name;
+
+there is a problem in scanf reading, which is, if the string we need to enter has multiple words, say "Taj Mahal", scanf will stop taking in any input once it gets a Space
+to avoid this we use gets() function
+
+gets(name);
+
+
+length of a string:
+length means finding the length of charecters in the array
+say:
+S={'w','e','l','c','o','m','e','\0'}
+we have to scan through this array until we reach \0
+once we reach \0, we get the string
+
+code:
+int main(){
+    char S[]="welcome";
+    int i;
+    for(i=0;S[i]!='\0',i++){} //counts the length in i
+    printf("length is %d",i);
+    return 0;    
+}
+
+
+how to change the case of a String:,ie, from upper case to lower case or vice versa
+
+we know that A-Z -> 65-90
+and a-z -> 97-122
+
+we can see that for the same alphabet, the difference btwn the values of the upper case and lower case letters is 32
+a-A=97-65=32 
+
+so if we add 32 to a upper case letter, we get a lower case
+so if we subtract 32 to a lower case letter, we get a upperr case
+
+int main(){
+    char A[]="WELCOME";
+    int i;
+    for(i=0;A[i]!='\0';i++){
+        A[i]=A[i]+32;
+    }
+    printf("New string is: %s",A);
+}
+
+if a string has both kinds of cases, and we need to change both the cases to the opposite,ie, toggle them we will do this by:
+
+char A[]="wElCome";
+int i;
+for(i=0;A[i]!='\0',i++){
+    if(A[i]>=65 && A[i]<90){
+        A[i]+=32;
+    }else if(A[i]>='a' && A[i]<=122){
+        A[i]-=32;
+    }
+}
