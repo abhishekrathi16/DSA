@@ -1,0 +1,219 @@
+lec 79
+
+Arrays
+
+single valued variable/scalar variable 
+x=10 say just stores one value at a specific address
+
+arrays are collections of similar data types
+array elements are represented by indices
+arrays are vector variables 
+
+int A[5] --> A[] [] [] [] []
+               0  1  2  3  4
+each element has an address which is contiguous to the element
+lets say that the first element is at address 2000 then next will be at 2002, then 2004 so on
+
+initialisation => int A[5];
+when only initialisation is done the array will contain garbage values
+
+the next method is initialisation and declaration together
+int A[5]={2,4,6,8,10};
+//initialised with 5 values
+
+int A[5]={2,4}; //this method will initialize the first 2 elements with 2 and 4
+
+int A[5]={0}; //all elements are initialised with 0
+
+int A[]={2,4,6,8,10,12}; //this declares and initializes an array with 6 elements
+
+
+int A[5]={2,5,4,9,8};
+printf("%d",A[0]); //lets us access and print the first element of the array using the index
+
+to traverse through an array we can use a loop(generally for loop)
+
+for(int i=0;i<5;i++){
+    pf("%d",A[i]);
+}
+
+instead of writing A[2] for 3rd element of the array we can also write 2[A] as well as *(A+2)
+so we can access array elements using pointer arithmetic
+
+
+lec 82
+
+static vs dynamic array
+
+once declared the size of an array cant be changed 
+the array is created inside the stack in main memory
+The memory to be allocated to the array has to be decided at compile time and is allocated at runtime
+
+This is a static array
+
+if we want a static array with user's need of size, we can do this:
+int A[5]; //for C
+
+int n;
+cin>>n;
+int B[n]; //for C++ 
+
+for dynamic arrays, we will need to have memory allocated in Heap
+this can be done using memory allocation using pointers
+
+void main(){
+    //in C++ we use new keyword
+    int A[5];
+    int *p;
+    p=new int[5]; //this pointer now points to an array created in the heap memory
+    //this array can be accessed with pointers only
+
+    //in C we use malloc fnction
+    p=(int *)malloc(5*sizeof(int));
+}
+
+if we declare an array in the heap we need to free it otherwise it creates a memory leak problem
+
+in C we deallocate using -  free(p);
+in C++ we do this using -  delete[] p;
+
+to access a dynamic array ww use pointer
+this pointer acts like the name of an array, so we can do this:
+p[0]=5; //assigns first element of the dynamic array a value 5
+
+how to increase or decrease the size of an array in heap?
+we take one more pointer and create a new array of req larger size
+
+int *p=new int[5]; //old array
+int *1=new int[10]; //new array
+
+now copy all elements of the old array to new array
+for(int i=0;i<5;i++){
+    q[i]=p[i];
+}
+
+//now we need to make p point to q
+//first delete the array of p
+delete []p;
+//make p point to array of q
+p=q;
+//now make q point to null
+q=NULL;
+
+//here we are making a new array of greater size and then copying the elements of old array to new array and then pointing p to the new array 
+
+//whatever we do, the size of the array cant be increased
+//this is because array is a set of contiguous elements hence we cant increase the set out of nowhere bcz we dont know whether the new elements will be conitiguos or not
+hence we need to use a new array in order to grow this current array
+
+
+lec 86
+2-D arrays
+
+we can create n dimensional arrays if we want, 2 D array is the least complex part of the multi dimensional arrays
+
+int A[3][4];
+the array is represented as a grid/tabular format but the memory allocation is done lineraly like a single dimensional array
+
+even though we have a linear representation we access the array usng row and columns like :
+A[1][2]=15;
+
+the array can be declared like this :
+int A[3][4]={{1,2,3,4},{2,3,4,5},{3,4,5,6}};
+
+if we want a dynamic 2D array,
+int *A[3];
+A[0]=new int[4];
+A[1]=new int[4];
+A[2]=new int[4];
+
+these creates a 2D array in heap
+we create an array of pointers in the stack and the arrays of the pointers in heap, hence this 2D array is declaraed half in stack and half in heap
+
+another method is using double pointers
+int **A; //decraring a double pointer
+A = new int *[3]; //creating the array of pointers in heap
+A[0]=new int[4];
+A[1]=new int[4];
+A[2]=new int[4];
+
+this creates a 2D array in heap completely
+
+
+to traverse a 2D array:
+
+for(int i=0;i<3;i++){
+    for(int j=0;j<4;j++){
+        cout<<A[i][j]<<endl;
+        //or modify them or etc
+    }
+}
+
+
+lec 88
+arrays in compilers
+
+int A[5]={3,5,8,4,2};
+compilers have to convert the name to address since machines dont understand the name, rather they understand the address
+
+suppose we access an element and change its value
+A[3]=10;
+
+how to access its address?
+if we know the base address of the array we will know how to find it
+
+say the base address is 200
+then A[3] has address Add(A[3])==200+3*2=206
+
+so address of A[i] is:
+Add(A[i])= L0+i*w;
+here L0 is base address, i is index and w is data type size
+
+base address is known at runtime and can be used a that time
+
+the forumla gives a relative address that depends on the base address hence it is a relative forumla
+
+normally we start from index 0
+
+if we used index 1 as beginning
+addr(A[3])=200+(3-1)*2=204
+addr(A[i])= L0+(i-1)*w;
+
+this kind of array declaration is not done in C/C++ 
+it was used in old languages
+
+This kind of formula couldnt be used in C/C++ since the arrays start from index 0 and using this formula will cause a problm in address calculation
+
+
+in 2D arrays
+the representation of 2D arrays is done in two ways :
+1. Row major mapping 
+2. Column major mapping
+
+According to row major:
+add(A[1][2])= 200+ [1*4 + 2]*2
+add(A[2][3]) = 200 [2*4 + 3]*2
+
+add(A[i][j])= L0 + [i*(n) + j]*w
+L0 -> base address (address of A[0][0])
+n -> no of columns
+m -> no of rows
+w -> size of data type
+i,j -> indices
+
+
+according to Column major:
+add(A[1][2]) = 200 + [2*3 + 1]*2 = 214
+add(A[1][3]) = 200 + [3*3 + 1]*2 = 220
+
+add(A[i][j]) = L0 + [j*m + i]*w
+L0 -> base address (address of A[0][0])
+n -> no of columns
+m -> no of rows
+w -> size of data type
+i,j -> indices
+
+compiler can follow either mapping and have no problem since they are of the same time complexity
+
+
+for n dimensional array

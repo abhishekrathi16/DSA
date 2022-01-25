@@ -1,0 +1,220 @@
+lec 21,22,27,29
+
+----structure and functions----
+
+struct Rectangle{
+    int breadth;
+    int length;
+};
+
+void initialise(struct Rectangle *r,int l,int b){
+    r->length=l;
+    r->breadth=b;
+}
+
+int area(struct Rectangle r){
+    return r.length*r.breadth;
+}
+
+void changeLength(struct Rectangle *r,int l){
+    r->length=l;
+}
+
+int main(){
+    struct Rectangle r;
+    initialise(&r, 10, 5);  //call by address
+    int a=area(r);  //call by value 
+    changeLength(&r,20); //call by address
+
+    return 0;
+}
+
+this style of programming leads to Object Oriented programming and is the highest style of programming that we can do in C
+
+here we make object from the structure and use it to define functions of the object
+
+In C++ we have classes for object Orientation
+Here is the equivalent code of the above C program in C++
+
+//class Rectangle contains data members(breadth and length) and functions(initialise,area and changeLength)
+
+class Rectangle{
+    private:
+    //private data members
+      int breadth;
+      int length;
+
+   public:
+   //public functions
+    Rectangle(int l,int b)  //this is the constructor
+    {
+        length=l;
+        breadth=b;
+    }
+
+    int area(){
+        return length*breadth;
+    }
+
+    void changeLength(int l){
+        length=l;
+    }
+
+};
+
+int main(){
+    Rectangle r(10,5); //defining the object of the class and initialising the data members at the same time
+    r.area();
+    r.changeLength(20);
+
+    return 0;
+}
+
+
+if we cant the data members to get initialised at the same time of creation of the object, we use constructors
+it is a function with the same name as that of the class name
+
+
+Here we write a better approach to the CPP class program we made for area and perimeter of the Rectangle
+
+#include<iostream>
+
+using namespace std;
+
+class Rectangle{
+    private:
+    int length,breadth;
+
+    public:
+    //default constructor: it is called if we dont pass any parameters when we create the object,ie, deparameterized constructor
+    Rectangle(){
+        length=1;
+        breadth=1;
+    }
+
+    Rectangle(int l,int b); //parameterized constructor
+    //we are using constructor overloading here which means that this class uses more than one constructors
+
+    int area();  //facilitator
+
+    int perimeter();  //facilitator
+
+    int getLength()  //accessor function
+    {
+        return length;
+    }
+    
+    void setLength(int l)  //mutator function
+    {
+        length=l;
+    }
+
+    //we can also define destructors by writing them as:
+    ~Rectangle(); //they destroy the object of the class
+}
+
+Rectangle::Rectangle(int l,int b){
+    length=l;
+    breadth=l;
+}
+
+int Rectangle::area(){
+    return length*breadth;
+}
+
+int Rectangle::perimeter(){
+    return 2*(length+breadth);
+}
+
+Rectangle::~Rectangle(){}  //when main() ends the destructor is called automatically
+
+int main(){
+    Rectangle r(10,5);
+    cout<<r.area();
+    cout<<r.perimeter);
+    r.setLength(20);
+    cout<<r.getLength();
+
+    return 0;
+}
+
+
+----Template classes----
+
+this is an example class:
+
+class Arithmetic{
+    private:
+    int a,b;
+
+    public:
+    Arithmetic(int a,int b);
+    int add();
+    int sub();
+};
+
+Arithmetic::Arithmetic(int a,int b){
+    this->a=a;
+    this->b=b;
+}
+
+int Arithmetic::add(){
+    return (a+b);
+}
+
+int Arithmetic::sub(){
+    return (a-b);
+}
+
+we can see that this class is defined for int type of data
+now if we want a class for float or double, do we have to rewrite a class again? NO, C++ allows us to use the same class for diff data using template/generic class
+
+we use keywords "template<class T>"
+
+so the class will look like:
+//wherever we find that we need to change the data types we will use the keyword "T" as shown: 
+
+
+template <class T>
+class Arithmetic{
+    private:
+    T a;
+    T b;
+
+    public:
+    Arithmetic(T a,T b);
+    T add();
+    T sub();
+};
+
+template<class T>
+Arithmetic<T>::Arithmetic(T a,T b){
+    this->a=a;
+    this->b=b;
+}
+
+template<class T>
+T Arithmetic<T>::add(){
+    T c;
+    c=a+b;
+    return c;
+}
+
+template<class T>
+T Arithmetic<T>::sub(){
+    T c;
+    c=a-b;
+    return c;
+}
+
+int main(){
+    //for int parameters
+    Arithmetic<int> ar(10,5);
+    cout<<ar.add();
+
+    //for float type parameters
+    Arithmetic<float> ar1(1.5,1.2);
+    cout<<ar1.add();
+
+    return 0;
+}

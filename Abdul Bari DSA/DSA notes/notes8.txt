@@ -1,0 +1,158 @@
+----RECURSION----
+
+lec 46
+
+when we start executing a program, the execution starts from main() function and when it encounters a function call statement the control passes to the function and when return statement is encountered, the control passes back to main until it ends
+
+general form of RECURSION:
+if a function calls itself it is called a recursive function
+
+type function(params)
+{
+    if(base condition){
+        ...
+        ...
+        function(params)
+    }
+}
+
+all recursive functions must have a terminating condition because if this condn is not present, the program wll go into infinite loop. so when this condition is fulfilled, recursion stops
+
+
+example of a recursive function:
+
+void fun1(int n){
+    if(n>0){
+        pf("%d",n);
+        fun1(n-1);
+    }
+}
+
+void main(){
+    int x=3;
+    fun1(x);
+}
+
+recursive functions are traced in form of a tree (see notes copy)
+
+void fun2(int n){
+    if(n>0){
+        fun2(n-1);
+        pf("%d",n);
+    }
+}
+
+void main(){
+    int x=3;
+    fun2(x);
+}
+
+notice the difference btwn the two codes, in fun1 the printing is done before function call, in fun2 the printing is done after the func call
+hence the tracing as well as output vary a lot
+
+in fun1 the function is called after print and at the last recursion when terminating condition is fulfilled, the control is passed on to main
+in fun2, the control is passed to the previous call then the printing is done and so on and at last after the first function call has been comepletely executed, the control is passed on to the main
+
+another example,
+say there are 3 rooms, room1,2 and 3 and all have a bulb
+and there are a few instructions:
+1. switch on bulb
+2. go to next room
+and ask you to perform them recursively
+
+so what we will do: go to room1, switch on bulb, then go to room 2 and switch on bulb, then go to room3 and switch the bulb on. This was the calling phase(ascending). Now there are no more rooms so we come out of them one by one, first come back to room2, then to room1 and then come out. This is returning phase(descending phase)
+
+if the instructions were:
+1. go to next room
+2. switch on bulb
+
+here first we will go to room1, then room 2 and then to room 3, switch on bulb of room3, come to room 2, switch on its bulb, then come to room1 and switch its bulb on and then come out of room1 
+This is the difference b/w the two methods
+
+
+So this is the new general form of the recursive function:
+
+void fun(int n)
+{
+    if(n>0)
+    {
+        1.....  //before calling statement(ascending)
+        2. fun(n-1) //function call
+        3......   //after func call[descending]
+    }
+}
+
+
+lec 48
+How recursion uses stack
+
+void fun1(int n){
+    if(n>0){
+        pf("%d",n);
+        fun1(n-1);
+    }
+}
+
+void main(){
+    int x=3;
+    fun1(x);
+}
+
+first the code section is loaded
+ascending section:
+activation record of main is created, and its variable is defined
+activation record of fun1 is created and n=3 is declared, fun1 is called again, activation record is created and n=2 is created
+then it is called again and activation record is created with n=1
+then it is called again and activation record is created with n=0
+
+descending section:
+after that the activation record with n=0 is deleted
+after that the activation record with n=1 is deleted
+after that the activation record with n=2 is deleted
+after that the activation record with n=3 is deleted
+after that activation record of main is deleted
+
+so total number of calls done here is n+1 (where n was the variable we passed)
+each call had constant time complexity
+hence the total time complexity is T=n*1=O(n)
+Space complexity is O(n) as the number of variables created is n+1
+
+similarly the activation records of fun1 will be same as that of fun2
+
+
+How to find time complexity of recursive functions:
+lets say that all statements in a function take 1 unit of time
+so counting the number of times a function has executed in recursion will do the work
+
+void fun1(int n){
+    if(n>0){
+        pf("%d",n);
+        fun1(n-1);
+    }
+}
+
+void main(){
+    int x=3;
+    fun1(x);
+}
+
+here we can see as x=3 the number of times the recursion is happening is 3
+hence the time complexity is O(n)
+
+Reccurence relation
+
+void fun1(int n) ......T(n)
+{
+    if(n>0)   ......1
+    {
+        pf("%d",n);  .....1
+        fun1(n-1);  ..... T(n-1)
+    }
+}
+
+See notes copy to see how to find time complexity of a recursion using Reccurence relations
+
+
+
+
+

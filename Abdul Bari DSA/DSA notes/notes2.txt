@@ -1,0 +1,39 @@
+AIM : complete understanding of time complexity, best worst and expected cases, calculation of time complexity and start with arrays
+
+if increment is i++ or i-- then TC is O(n)
+
+if increment is i*2 or decrement is i/2 then TC is O(logn)
+
+If f 1 (n) is in O(g 1 (n)) and f 2 (n) is in O(g 2 (n)), then (f 1 + f 2 )(n) is in O(max(g 1 (n)),
+(g 1 (n))). -- example -> if else statements   O(n)
+
+If f 1 (n) is in O(g 1 (n)) and f 2 (n) is in O(g 2 (n)) then f 1 (n) f 2 (n) is in O(g 1 (n) g 1 (n)) -- example -> nested loops O(n^2)
+
+
+
+counter variable --> count 
+flag --> for checking something 
+   if else -> true: flag=1
+              false: flag=0
+
+
+easy (50%) , mediocre , hard (100%)
+
+
+if(a==2){
+   print("a is two");    // O(1)
+}
+else{
+   for(i=1;i<100;i++){
+      print("a is not two");  // O(n)
+   }
+}
+
+if --> O(1)
+else --> O(n)
+
+for if-else we will always report the time complexity which is greater 
+ans - O(n)
+
+
+//recursion -> function which calls it self is called recursive function. 

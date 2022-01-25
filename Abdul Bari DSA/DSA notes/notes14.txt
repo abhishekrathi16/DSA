@@ -1,0 +1,222 @@
+lec 104
+
+Algo for Binary search:
+
+->iterative method
+
+algo BinSearch(l,h,key){
+    while(l<=h){
+        mid=[(l+h)/2];
+        if(key==A[mid]){
+            return mid;
+        }else if(key<A[mid]){
+            h=mid-1;
+        }else{
+            l=mid+1;
+        }
+    }
+}
+
+-> recursive method
+
+algo RBinSearch(l,h,key){
+    if(l<=h){
+        mid=[(l+h)/2]
+        if(key==A[mid]){
+            return mid;
+        }else if(key<A[mid]){
+            return RBinSearch(l,mid-1,key);
+        }else{
+            return RBinSearch(mid+1,h,key);
+        }
+    }else{
+        return -1;
+    }
+}
+
+lec106
+analysis:
+
+the search begins by comparing the middle element first
+if the element is matched at the middle, search ends immediately: time complexity=O(1)
+
+from the trace tree (in copy), we can see that the time taken is O(1) for best case and for worst, it is O(log n)
+the number of comparisions depends on the height of a tree
+even for an unsuccessful search, the TC is O(log n)
+
+avg case: total time taken for n cases / n cases
+for root of trace tree, one comparision reqd
+at h=2, 2 elements req 1 comparisions
+at h=3, 4 elements req 2 comparision
+at h=4, 8 elements req 3 comparision
+
+this can be written as (1+2^1+2*2^2+3*2^3)/n = log(n) [calculate]
+
+
+6. Get -> gets the value at an index
+Set -> replaces a value at an index
+
+
+Get(index)
+
+if(index>=0 && index<length){
+    return A[index];
+}
+
+time taken here is constant, since all we do is one comparision
+
+Set(index,x){
+    if(index>=0 && index<length){
+        A[index]=x;
+    }
+}
+
+time taken here also is constant
+
+7. Max/Min operation:
+finds the maximum element of the array
+here we will need to check the entire list to find the max in case of a unsorted array
+for a sorted array, max element is the last element always
+
+initially we take max=A[0];
+then we traverse frm first element to last checking if the element is greater than max, if it is, we will replace the value of max with the current element
+
+max=A[0];
+for(i=1;i<length;i++){
+    if(A[i]>max){
+        max=A[i];
+    }
+}
+return max;
+
+time taken here is equal to no. of times a loop executes,
+since it executes for n number of elements, the time taken is O(n)
+
+for min() the method is same
+min=A[0];
+for(i=1;i<length;i++){
+    if(A[i]<min){
+        max=A[i];
+    }
+}
+return min;
+here also the time complexity is O(n)
+
+8. sum -> returns the sum of all the elements in the array
+
+total=0;
+for(i=0;i<length;i++){
+    total=total+A[i];
+}
+return total;
+
+here the loop repeats for n times hence the time taken is O(n)
+
+we can also write this func repeatedly
+sum(A,n)= sum(A,n-1)+A[n], n>=0
+           0,     n<0
+
+here n is the last index
+
+int sum(A,n){
+    if(n<0){
+        return 0;
+    }else{
+        return sum(A,n-1)+A[n];
+    }
+}
+
+for avg we just divide sum by n
+
+
+lec 109-110
+9. reverse an array
+
+there are 2 methods:
+1st is: using auxillary array
+we will take another array and then reverse copy all elements frm old array into the new Array
+now replace the elements in the original array
+time taken here is O(n)
+Algo:
+
+for(i=length-1,j=0;i>=0;i--,j++){
+    B[j]=A[i]; //reverse copying
+}
+for(i=0;i<length;i++){
+    A[i]=B[i]; //copying the elements
+}
+
+2nd method is swapping the elements:
+for(i=0,j=length-1;i<j;i++,j--){
+    temp=A[i];
+    A[i]=A[j];
+    A[j]=temp;
+}
+
+10. shift and rotate:
+left shift/rotate: shifts elements to the left and replace rightmost element with a zero
+in rotation, we will replace the rightmost element with the element we removed from the left
+
+6,3,8,5,9 --> after left shift --> 3,8,5,9,0
+6,3,8,5,9 --> after left rotate --> 3,8,5,9,6
+
+
+lec 112
+
+1. insert a new element in a sorted array
+If array is: 4,8,13,16,20,25,28,33
+insert(18) we can see 18 is greater than 16 but less than 20, so thats where we will insert it
+
+we will shift the elements from the last 
+we also dont need to find the position of the elements by comparing them
+Algo:
+
+x=18;
+i=length-1; //we will start shifting from the last element
+while(A[i]>x)  //shift elements as long the elements are less than x
+{
+    A[i+1]=A[i];
+    i--;
+}
+A[i+1]=x;
+
+
+2. checking if the array is sorted or not
+if every number is smaller than the next number the list is sorted, else it is not sorted
+
+isSorted(A,n){
+    for(i=0;i<n-1;i++){
+        if(A[i]>A[i+1]){
+            return false;
+        }
+    }
+    return true;
+}
+
+this algo will take O(n) time if list is sorted
+if not sorted the min time is O(1), max is O(n)
+
+3. all -ve numbers on left side and +ve on right
+we will take 2 pointers i and j at the two ends of the array 
+i will check for positive numbers in left side of the Array and j will check for negative numbers in the right side of the array
+
+i=0, j= length-1;
+while(i<j){
+//find a positive number
+while(A[i]<0){
+    i++;
+}
+//find a negative number
+while(A[i]>=0){
+    j++;
+}
+if(i<j){
+    //swap both the numbers
+    swap(A[i],A[j]);
+}
+}
+
+time taken => spent on comparing the elements
+so it depends on how many elements were compared
+interchange will happen only if the positive and negative are not in the correct position
+but even then the comparisions are always done

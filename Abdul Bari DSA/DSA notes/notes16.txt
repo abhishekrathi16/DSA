@@ -1,0 +1,293 @@
+Some example problems using arrays
+
+lec 121
+1. Find a single missing element from a sequence in the array
+
+suppose the array is : {1,2,3,4,5,6,8,9,10,11,12}
+we can see that 7 is missing here
+we need to deduct the sequence of the array here
+here are the natural numbers, so we will try to find the natural number which is missing by:
+
+missing element = sum of n natural numbers - sum of the elements of the array
+
+=> 12(!2+1)/2 - sum(arr)
+
+algo for the solution:
+
+sum=0;
+for(i=0;i<11;i++){
+    sum=sum+A[i]; //sum of elements of the array
+}
+s=n*(n+1)/2; //sum of first 12 natural numbers
+element=s-sum; //78-71=7 ans
+
+now suppose the elements are : {6,7,8,9,10,11,13,14,15,16,17}
+12 is missing here
+the sequence is sorted
+but the numbers are not first n natural numbers
+l=6, h=17 here
+n=11  //no of elements
+we will find the missing number using indices
+
+if we take the difference btwn the element and the index, the diff is always 6
+6-0=6
+7-1=6
+8-2=6....
+
+at index 6, 13-6!=6 hence we know the difference becomes 7 here
+then we continue checking if the diff in the indices is 7 from here on
+
+if it changes at any point again, we will know another element is missing
+
+algo for single missing element
+
+l=6,h=17,n=11
+diff=l-0
+for(i=0;i<n;i++){
+    if(A[i]-i!=diff){
+        printf("missing element %d\n",i+diff);
+        break;
+    }
+}
+
+the time taken to find the missing element here is O(n)
+
+
+2. finding multiple missing elements
+lec 122
+
+array is : {6,7,8,9,11,12,15,16,17,18,19}
+n=11,l=6,h=19
+
+we start in the same way as the last problem, find the diff btwn the index and the element
+
+once one missing element is encountered, the diff increases by one
+we see that here 10,13,14 are missing
+we will keep looping until the end of the loop to keep checking if any element is missing(wherevr the difference is not same)
+whenever we find the missing element, we increase the difference by 1
+
+algo:
+diff=l-0;
+for(i=0;i<n;i++){
+    if(A[i]-i!=diff){
+        //this loop is used here in case the more than one elements are missing continuously
+        while(diff<A[i]-i){
+            printf("%d\n",i+diff);
+            diff++;
+        }
+    }
+}
+
+time complexity is O(n^2) 
+
+3.
+lec 123: finding missing elements using hash table
+if the array is = A[]={3,7,4,9,12,6,1,11,2,10}
+l=1
+h=12
+n=10
+
+the array is not sorted, we can see that missing elements are 5,8
+
+to solve this, we take a new array H with 12 elements and initialise them with 0
+now we loop the array A
+when we find an element, we make the (element)th index in the array H by 0
+after the array iteration is over, whichever index is not increased/or is zero, that element is missing 
+
+this method is the simplest form of hashing, also called as bitset or a hashtable
+
+this takes time complexity of O(n)
+this may take a lot of space but the time is drastically reduced
+
+we can also use hash table for searching in an array
+
+algo:
+
+l=1
+h=12
+n=10
+A[10]={3,7,4,9,12,6,1,11,2,10}
+H[h]={0}
+//hash table
+for(i=0;i<n;i++){
+    H[A[i]]++;
+}
+//finding the missing elements
+for(i=l;i<=h;i++){
+    if(H[i]==0){
+        printf("%d\n",i);
+    }
+}
+
+lec 124
+4. finding duplicates in a sorted array and how to count the duplicates
+lets say our array is A={3,6,8,8,10,12,15,15,15}
+n=10
+we take a counter i, we will check whether 2 consecutive elements are same or not
+when we come accross an element such that A[i]==A[i+1], print A[i]
+
+we take a varable, duplicate=0
+if we come accross an element such that A[i]==A[i+1], we do this:
+duplicate=A[i] //we are keeping account of the last duplicate found
+//then we increase a counter for this 
+whenever we come across a new duplicate we update it
+
+algo to print all duplicates
+
+lastDup=0;
+for(i=0;i<n;i++){
+    if(A[i]==A[i+1] && A[i]!=lastDup){
+        printf("%d\n",A[i]);
+        lastDup=A[i];
+    }
+}
+
+now to count the number of duplicates
+we take 2 variables: a loop counter i, and another counter j
+
+if we come across an element such that A[i]==A[i+1], we make j=i+1
+and keep incrementing it until A[j]!=A[i]
+so, the number of duplicates=j-i
+and keep doing it until we reach the last point
+
+for(i=0;i<n-1;i++){
+    if(A[i]==A[i+1]){
+        j=i+1;
+        while(A[j]==A[i]) j++;
+        printf("%d is appearing %d times\n",A[i],j-1);
+        i=j-1; //skips checking the duplicate elements
+    }
+}
+
+time analysis: the while loop is taken as negligible since it is not doing a lot
+so time complexity is O(n)
+
+lec 125
+5. finding duplicates in a sorted array using a hash table
+our array is A={3,6,8,8,10,12,15,15,15}
+
+here n=10,h=20,l=3
+we create a new array H[h]={0} initialise it with zero
+we loop A and whichever value we come across, we increase the value of that (element)th index by 1 in H
+
+now we loop the hash table H, and whenever we come across an index where the value is greater than 1, that index is printed as a duplicate and the value at that index is the number of times that element is occuring as a duplicate
+
+this method takes time complexity of O(n)
+algo:
+
+for(i=0;i<n;i++){
+    H[A[i]]++;  //n time
+}
+for(i=0;i<h;i++){
+    if(H[i]>1){
+        printf("%d is appearing %d times\n",i,H[i]); //n time 
+    }
+}
+
+total time =n+n=2n => O(n)
+
+lec 126
+6. finding duplicates in an unsorted array
+A[]={8,3,6,4,6,5,6,8,2,7}
+n=10
+lets take a variable count, init it with 1
+count=1 
+we take a loop iterable i and another counter j
+
+we loop through the array using i
+at every iteration of i, we will use j and iterate through the array using j
+if A[j]==A[i], we do count+=1 and change A[j]=-1
+we are doing this A[j]=-1 because if we come against the same value once again, we wont have to count it again
+
+after the iteration of j we check if count>1, if it is, we print the element A[i] and the number of times it occured,ie, count and then we change the value of count back to 1
+
+time taken in this process is O(n^2) since we are iterating both i and j in loops, hence we are using a nested loop
+
+algo:
+for(i=0;i<n;i++){
+    count=1;
+    if(A[i]!=-1)  //check only if the element is not marked as duplictate
+    {
+    for(j=i+1;i<n;j++){
+        if(A[j]==A[i]){
+            count++;
+            A[j]=-1; //marking the elements which have been found as duplictates
+        }
+    }
+    if(count>1){
+        printf("%d %d",A[i],count);
+    }
+    }
+}
+
+7.
+we can solve the above problem using a hash table
+
+A[]={8,3,6,4,6,5,6,8,2,7}
+n=10, h=8, l=3
+H[h]={0}
+
+now we loop through the array A and increase the value of that (element)th index by 1 in the hash table
+then we loop through the hash table and find the duplicates and the number of times they appear
+time complexity is O(n)
+
+code:
+
+for(i=0;i<n;i++){
+    H[A[i]]++;  //n time
+}
+for(i=0;i<h;i++){
+    if(H[i]>1){
+        printf("%d is appearing %d times\n",i,H[i]); //n time 
+    }
+}
+
+8. 
+lec 127
+if a list of elements is given, find a pair of elements such that their sum is equal to a given number
+
+lets say our array is : {6,3,8,10,16,7,5,2,9,14}
+lets say our req sum is 10
+
+1st method:
+lets take a variable i for loop iteration
+we take another variable j=i+1
+and  we will iterate it till the last of the array, and we will check if A[i]+A[j]=10
+
+all elements here are unique, no duplicates
+if duplictaes are present then the duplicates sd be removed
+
+code:
+for(i=0;i<n-1;i++){
+    for(j=i+1;j<n;j++){
+        if(A[i]+A[j]==k){
+            printf("%d+%d=%d\n",A[i],A[j],k);
+        }
+    }
+}
+
+the time taken here is O(n^2) since the loop is nested 
+hence it is a quadratic time taking procedure
+
+this method is slow and hence we will use a hash table to reduce the time
+
+method 2: using hash tables
+
+n=10
+h=16
+l=2
+
+we take i for looping array A
+if we take A[i] as our element
+then we check if the value at (k-A[i])th index of hash table H is 1 or not
+if it is 1, then we print both A[i] and k-A[i]
+if it is not 1, we increment the value at A[i]th index by 1
+
+code:
+for(i=0;i<n;i++){
+    if(H[k-A[i]]!=0) //if the pair of the current element is found then print both
+    {
+        printf("%d+%d=%d,A[i],k-A[i],k);
+    }
+    H[A[i]]++;
+}

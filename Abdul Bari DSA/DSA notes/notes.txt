@@ -1,0 +1,53 @@
+int, float , boolean, binary, hexadecimal, octal, arrays,charecters etc --> primitive data types
+
+linked lists, stacks, queues, graphs, maps, trees, etc --> user defined data types (structs, classes, objects ke help se we can make these)
+
+linked lists, stacks, queues, graphs, maps, trees -> data structures
+
+
+DS are a grp of data with a certain functionality
+Data structure is a particular way of storing and
+organizing data in a computer so that it can be used efficiently.
+
+array - {2,3,4,5} 2->3->4->5
+
+(DS+functions)--> abstract data types 
+
+(LL) + (insert,delete,display) --> ADT
+
+
+LL -> insert, delete, display, etc
+stacks -> push, pop, display, top 
+queues-> rear, front, delete, insert
+
+
+Problem -> chai bnao
+certain steps--> algorithm
+
+make a linked list and display it 
+
+An algorithm is the step-by-step unambiguous instructions to solve a given problem.
+
+[99,3,10,1,80] --> sort kardo 
+
+Effeciency
+TIME EFFECTIVE -- time complexity ---> time
+SPACE EFFECTIVE -- space complexity ---> memory
+
+
+Algorithm analysis helps us to determine which algorithm is
+most efficient in terms of time and space consumed.
+
+
+algo 1 - t1 time -- s1 memory 
+algo 2 - t2 time -- s2 memory
+
+fairly -- mathematical calculation of time complexity
+
+5 elements--faster
+100000 elements - slower
+
+f(n) g(n) purely mathematically based 
+fair comparison of 2 or more algos
+
+

@@ -1,0 +1,132 @@
+lec 72
+
+examples of recursion
+
+5> Fibonacci series
+
+0, 1, 1, 2, 3, 5, 8, 13...
+
+Each term is obtained by adding previous two terms, first two terms are 0 and 1 respectively
+
+Fib(n)= 0, n=0
+        1, n=1
+        fib(n-2)+fib(n-1), n>1
+
+using recursion 
+
+int fib(int n){
+    if(n<=1){
+        return n;
+    }else{
+        return fib(n-2)+fib(n-1;)
+    }
+}
+
+using loops(iterative function)
+
+int fib(int n){
+    int t0=0,t1=1,s;
+    if(n<=1){
+        return n;
+    }else{
+        for(int i=2,i<=n;i++){
+            s=t0+t1;
+            t0=t1;
+            t1=s;
+        }
+        return s;
+    }
+}
+
+the time complexity for iterative version is 0(n) time 
+
+
+the recursion algo is taking time of order of O(2^n)
+this is an excessive recursion, that is it calls itself for same parameters multiple times
+hence we need to remove this excessive reucursion so as to reduce the time complexity
+we can do this using static/global variables/array
+lets see how to modify the func(in copy)
+
+here is the modified func:
+
+int F[10];
+
+int fib(int n){
+    if(n<=1){
+        F[n]=n;
+        return n;
+    }else{
+        if(F[n-2]==-1){
+            F[n-2]=fib(n-2);
+        }
+        if(F[n-1]==-1){
+            F[n-1]=fib(n-1);
+        }
+        return F[n-2]+F[n-1];
+    }
+}
+
+what we are doing here is that we are taking a global array and whenevr we call the recursive function, first we will check whether the value is alrdy present in the array, if yes, we will not keep calling the func for excessive recursion
+if no, we will do the recursion
+since the values are stored in the array, we can call it as memorization
+This reduces the time complexity to O(n)
+
+
+6> Combination formula or Selection formula
+The formula to know that if a set of objects is given to us, in how many ways can we select a subset of objects is called combination formula
+
+nCr=n!/[r!(n-r)!]
+
+if n=5, the value of r can be any between 0 and 5
+so value of r cant be less than 0 or greater than n
+
+int C(int n, int r){
+    int t1,t2,t3;
+    t1=fact(n); //n
+    t2=fact(r);  //n
+    t3=fact(n-r); //n
+
+    return t1/(t2*t3);
+}
+
+we know that fact() is taking n time 
+hence we know that the function is O(n)
+
+can we write a function for combination recursively?
+
+lets see pascal's triangle (in copy)
+
+from pascals triangle we can see that: nCr= n-1Cr + n-1Cr-1
+
+int C(int n, int r){
+    if(r==0||n==r){
+        return 1;
+    }else{
+        return C(n-1,r-1)+C(n-1,r);
+    }
+}
+
+this is the recursive func for finding combination
+
+
+7>
+
+TOWER OF HANOI
+
+suppose we have 3 towers A,B,C 
+and tower A has some dics kept, of different sizes, with smallest on the top and largest at the bottom
+
+we have to transfer all discs from one tower to another,from A to C, with 2 conds:
+1. move one disc at a time
+2. no larger disc can be kept on another smaller disc
+
+we have to transfer from A to C, while using B as a help
+see copy for discussion
+
+void TOH(int n,int A,int B,int C){
+    if(n>0){
+        TOH(n-1,A,C,B);
+        cout<<"from"<<A<<"to"<<C<<endl;
+        TOH(n-1,B,A,C);
+    }
+}

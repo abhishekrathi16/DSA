@@ -1,0 +1,249 @@
+---Introduction to data structures---
+lec 39
+
+Data structure can be defined as a collection of data and effiecient of operations on that data 
+
+during the execution how the program manages the memory and how it operates in it is handled by data structure
+
+suppose we have our data files and program files stored in the secondary storage(say HDD)
+
+when we open the data file it is brought into the main memory, or if we try to run an applicatio program, it also has to be brought into the main memory to run it
+
+every application deals with a certain data 
+
+the arrangement of data in the main memory when we execute a program which helps it to perform the functions effieciently is called data structures
+
+data structures are created in the main memory
+without data structures we cant run applications and programs
+
+if we have a large amount of data which is used for, say commercial uses, and is relational, it is stored in tables in the secondary storage
+to work on it we need to bring it into the main memory
+the data structures handle how the data is arranged in the main memory
+data bases handle how the relational data is stored in the secondary storage so that it can be easily transferred to the main memory and used easily
+
+very large data say 10 yrs of data or more, used for any commercial form, and may not be used daily is kept in an array of data bases and is called data warehouse
+The algorithms which help us access these data warehouses are called data mining algorithms
+
+big data is the a very large colllection of data about people or things and stuff, per se the Internet, the data is growing day by day and is accumulating together, this data which is helpful for analysis of things needs to be managed. The study of this data and its methods is Big Data
+
+
+lec 40
+
+Memory is divided into smallest unit called bytes
+Each byte has its own special address 
+
+The RAM is divided into manageable pieces called segments
+Each segment is 64kB
+
+We will assume in this course that the main memory is 64kb large only
+
+The entire main memory is divided into 3 sections - code section, stack and heap
+
+The machine code has to be brought into the main memory in order to be run
+it is brought into the code section
+
+generally integer takes 4 bytes, but we assume 2 bytes for better explanatory purposes
+
+Whatever variables are declared inside a function will take the memory reqd from the stack memory
+
+The block of memory which belongs to the main function is called activation record/stack frame of the main section
+
+Whatever memory (in bytes) that was to be taken up by the function/program and its variables is decided at compile time and is static(non changing)
+This allocation of memory is called static memory allocation
+This memory is allocated in the stack section as activation record
+
+example of a code 👍
+void fun2(int i){
+    int a;
+    ....
+    ....
+}
+
+void fun2(){
+    int x1;
+    ....
+    ....
+    fun2(x1);
+}
+
+int main(){
+    int a;
+    int b;
+    fun1();
+}
+
+
+first the entire code is loaded into the code section
+divided as main(),fun1() and fun2()
+
+now in main, the code has 2 variables so an activation record is created in stack memory and memory is allocated to the main()
+then control passes to fun1(), an activation record is created in the stack on the top of main's activation record
+
+when the fun2 calling statement is countered, the fun2 is called and its activation record is also created in the stack on the top of fun1's activation record
+
+once fun2 is finished running, it's activation record is deleted and then fun1 ends and its activation record is also deleted
+
+then the main finishes running and its activation record is also deleted
+
+we can see that this follows the functioning of a stack
+
+Dynamic allocation lec 42
+Heap memory in the main memory is used as unorganized memory
+This heap memory should be treated as a resource,ie, when it is finished being used we need to release the memory
+Programs cannot directly access heap memory
+
+We can access heap memory using pointers
+
+void main(){
+    int *p; //amount of memory taken up by a pointer is equal to the memory taken up by the variable it is pointing to
+    //the memory for a pointer is allocated in stack
+
+    //if we want to allocate memory for array of 5 integers in heap
+    p=new int[5]; //in C++ we use 'new' operator
+    p=(int *)malloc(sizeof(int)*5); //in C we use malloc/calloc to utilize heap
+
+    //when we dont need the heap memory anymore, we need to delete/deallocate the memory
+    delete []p; //in C++
+    free(p); //in C
+}
+
+if we dont deallocate the heap memory, it will give rise to loss of memory and this condition is called memory leak
+
+lec 42
+Types of Data structures
+
+1. Physical Data structures
+2. Logical Data structures
+
+Physical Datastructures :
+They represent how the memory is organized
+1. array - it has contiguous memory allocation and a fixed size, can be created in both stack and heap
+2. linked lists - this is a Dynamic Datastructure(ie it has a variable length), we can keep adding nodes or deleting nodes, we use it if the size of the list is not known, the memory is not allocated contiguously, each node has a link to its next node. All allocation done here is in heap memory
+
+Logical Datastructures:
+Stacks, queues, trees, graphs and hash tables
+
+stacks and queues are linear ds
+trees and graphs are non linear DS
+hash tables can be linear or tabular
+
+To implement these logical Datastructures are implemented using the Physical Datastructures
+
+Lec 43
+ADTs
+
+ADT means abstract data Types
+a data type is defined in two terms - representation of data and operations on the data
+
+if we take example of a int data type in C/C++ (a primitive data type):
+int x; //stored in 2 bytes as a single data
+2 bytes = 16 bits
+one bit is reserved for sign and 15 are for storing data 
+operations allowed on int are: +,-,/,*,%,++,--,AND,OR and other relational operations,etc
+
+keyword defn of 'abstract' - it means not knowing internal details
+abstract data types mean that their implementation details are hidden and only important functions are known
+
+let's take an example of a list and arrange them as a data structure
+list -> 8,3,9,4,6,10,12
+
+Data needed to keep this list:
+1. Space for storing elements
+2. Capacity of the list
+3. Size of the list
+
+We can represent and store this list using either of these-
+1. Arrays
+2. Linked Lists
+
+operations:
+1. add an element x (add(x))
+2. remove an element remove(x)
+3. search an element search(x)
+...
+
+The user using the list doesnt need to know how the list is implemented and how the functions are working, this is called an abstract data type
+ADT is a collection of data and it's functions with hidden implementation details
+
+general functions-
+1. add(element) or append(ele) - adds an element at the end of the list
+2. add(index,ele) or insert(index,ele) - insert element at a given index
+3. remove(index) - remove element at a given index
+4. set(index,ele) or replace(index,ele) - replace an element at a given index
+5. get(index) - return element at a given index
+6. search(key) - searches for a element at the given index
+7. sort() - sort a list in a asked manner
+
+
+lec 44
+Time and Space complexity
+Time complexity depends upon the procedure to do complete a task, no. of elements input 
+
+say we have an array of n elements and we want to add all elements, we have to go through all these elements hence we can say that this process will take n time if each element needs 1 time
+this is called as O(n) or time complexity of order of n
+ 
+<we have discussed time complexity in Code with harry videos>
+
+if we use single for loop, the time complexity is O(n)
+if we use nested loops, the time complexity will depend on how many loops are running nested, say if we have 2 nested loops the time complexty is O(n*n)
+
+The time complexity is equal to the degree of a polynomial which we use to represent a function
+
+Note: dont assume a code's time complexity just by seeing that a for loop is present...the time complexity depends how a for loop is growing, so look at the variables and its updation and then only decide what the time complexity is 
+
+
+How to find the  time complexity of a given code:
+
+1. 
+void swap(x,y){
+    int n;
+    t=x; //...1
+    x=y; //...1
+    y=t; //...1
+}
+we can see that each statement takes constant time 
+hence it has TC of O(1)
+
+2.
+int sum(int A[].int n){
+    int s,i; //...1
+    s=0; //...1
+    for(i=0;i<n;i++) //executes n+1 times hence n
+    {
+        s=s+A[i];  //executes n times hence n
+    }
+    return s;  //...1
+}
+
+the loop here is executing n times hence it takes n time, other statements take const time 
+sum of all times = 2n+3=O(n)
+
+3.
+void add(int n){
+    int i,j;
+    for(i=0;i<n;i++) //runs n times
+    {
+        for(j=0;j<n;j++)  //runs n*n times
+        {
+            c[i][j]=A[i][j]+B[i][j];  //runs n*n times
+        }
+    }
+}
+
+total time = 2(n*n) + 2n + 1 = O(n*n) [Big O of n square]
+
+
+4.
+
+fun1(){
+    fun2()  // n time
+}
+
+fun2()  //this function is taking n time
+{
+    for(int i=0;i<n;i++){
+        ...
+    }
+}
+
+here fun2 is taking n time and hence as fun2 is called inside fun1, fun1 is also of n time complexity

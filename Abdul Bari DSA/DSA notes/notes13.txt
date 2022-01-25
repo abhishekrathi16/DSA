@@ -1,0 +1,179 @@
+lec 94
+
+Array ADTs
+
+Data - Array space, size, length
+
+operations : display, add/append, insert, delete, search, get, set, max/min, reverse, shift/rotate
+
+if we want a array of size 10
+we can create it in stack or heap
+
+int A[10];
+
+or
+
+int *A;
+A=new int[10];
+
+length of an array means the number of elements present in the array
+if the array is empty, the length is also zero
+
+lec 96
+lets say out array is A[10]={8,3,7,12,6,9}
+
+length is 6 and size is 10
+
+1. display operation
+to print just one element say first, we have to use :
+printf("%d",A[0]);
+
+for(i=0;i<length;i++){
+    printf("%d",A[i]);
+}
+
+in a pseudo code we will be using prin(A[i]) instead of printf("%d",A[i]);
+
+2. Add/Append: appends an element at the end of the array
+The element is added is added at the next free space of the array
+to know which space is free, we will use length
+if length is 6 it means the next free space is at 6th index
+
+so to add an element x at the end of the array, we do:
+A[length]=x;
+length++;
+
+time taken here is O(1) hence constant
+
+
+3. insert()
+to insert an element at a given index we wll need to move the elements from that index to the end by one index
+
+so if the array is 8,3,7,12,6,9,10
+we do this: 8,3,7,12,6,9,10 ---> 8,3,7,12, ,6,9,10
+
+now insert the new element at the open space
+therefore the code for it is:
+
+for(int i=length;i>index;i--){
+    A[i]=A[i-1];  //shift the old elements
+}
+A[index]=x; //inserting the new element
+length++; //increase length by 1
+
+we also have to check if the number of elements doesnt exceed the size of the array otherwise overflow will happen
+
+time taken here depends where we insert the element
+if we insert at the end, there is no shifting required, here O(1) time is taken and this is the best case scenario
+if we insert at the first, we will need to shift n elements, here O(n) time is taken, this is the worst case scenario
+hence time taken by this algorithm is O(1) -> min
+                                      O(n) -> max
+
+
+4. delete : removes an element from a given index
+to delete element at index 3: delete(3);
+
+x=A[index]; //take a copy of the element
+//we cant leave a blanks space in the array once we delete it
+//we will shift all the elements one space ahead
+
+if array was : 2,3,7,12,15,6,9,10
+after delete(3): array will be : 2,3,7,15,6,9,10
+
+so code will be:
+x=A[index];
+for(i=index;i<length-1;i++){
+    A[i]=A[i+1]; //shift the elements
+}
+length--; //decrease length after delete
+
+we must take care that the index is not out of the range
+
+here also the time complxity depends on how many element we have to shift
+if we delete at last, no elements are needed to shifted and if we delete from 1st then we need to shift all elements
+hence best case is O(1) and worst is O(n)
+
+
+5. search
+
+we have 2 search methods: liear and binary
+
+to search an element it must be unique, if there are more than one elements with the same value the search will be ambiguos
+
+we will call the search element key
+
+in linear search the algo will compare all elements from the beginning one by one and return the index where the element is found, the search is successful
+
+if key is not found the element is not found the search is unsuccessful
+
+linear search is jst like traversing an array
+pseudo code for performing linear search:
+
+for(i=0;i<Length;i++){
+    if(key==A[i]){
+        return i;  //search successful
+    }
+}
+return -1;  //search unsuccessful
+
+time complxity depends on how many elements we are checking
+minimum, the element we are searching for is present at the first index, the time taken will be O(1) --> best case
+
+max, the element can be present at the end of the list and the time taken will be O(n) --> worst case
+
+in case of unsuccessful, the number of checks made is n, hence time complxity is O(n)
+
+for average case, 
+time = (sum of time taken in all possible cases)/(number of cases)
+=> time = (1+2+3+....n)/n
+=> time = (n(n+1)/2)/n
+=> time = (n+1)/2 => O(n)
+
+generally we will only use the worst case since best case nd avg case dont give a proper explanation
+
+if we are repeatedly searching for an element, the element will always take the same time
+to make it faster we can use two methods:
+1. Transposition
+everytime we search the element it is moved ahead by one index
+
+for(i=0;i<Length;i++){
+    if(key==A[i]){
+        swap(A[i],A[i-1]);
+        return i;  //search successful
+    }
+}
+return -1;  //search unsuccessful
+
+so here everytime the element is searched the element is brought ahead by one index and it reduces the time taken for searching slowly
+
+2. move to front
+
+this will move the searched element to the front hereby suddenly dropping thr search time for the element to be searched repeatedly
+
+for(i=0;i<Length;i++){
+    if(key==A[i]){
+        swap(A[i],A[0]);
+        return i;  //search successful
+    }
+}
+return -1;  //search unsuccessful
+
+lec 103
+Binary search: it searches for an element in a sorted array only
+it will first check for element in the middle of the array and split the array into two
+
+we need 3 elements: high, low and mid
+high points at the end of the list
+low points at the start of the list
+
+mid=(l+h)/2
+
+first we check at mid, if the element is found then return the position
+
+if A[mid]>key, then high=mid-1 and low stays same, then we repeat the procedure for the left side of the array
+
+if A[mid]<key, then low=mid+1 and high stays same, then we repeat the procedure for the right side of the array
+
+we keep repeating the procedure until the element is found or the list ends, ie, low>high
+
+the comparisons here are reduced very highly as compared to linear search

@@ -1,0 +1,83 @@
+lec 114
+
+merging of 2 arrays : Merging is a binary function and can be done only on 2 sorted arrays
+also needs a 3rd array
+
+lets say the 2 arrays are :
+A={3,8,16,20,25} (index represented by i here) [m elements]
+B={4,10,12,22,23} (index represented by j here) [n elements]
+
+and third array is C (index represented by k here)
+
+first we compare A[i] and B[j], whichever is smaller we copy in C[k]
+then do k++ and i++/j++
+then compare the next element to check whichever is smaller and copy it into the array
+This goes on until the arrays end 
+if one array is greater than the other, then after one array is completed, the elements left in the other array will be directly copied
+
+algo:
+//copying while either list is not empty yet
+while(i<m && j<n){
+    if(A[i]<B[j]){
+        C[k++]=A[i++];
+    }else{
+        C[k++]=B[j++];
+    }
+}
+//for copying the remaining elements once either of the arrays end
+for(;i<m;i++){
+    C[k++]=A[i];
+}
+for(;j<n;j++){
+    C[k++]=B[j];
+}
+
+the time complexity of this func is Big Theta(m+n)
+
+
+lec 116
+Set Operations:
+
+We will work on 2 types of arrays(sets) here, sorted and unsorted
+
+let 2 unsorted arrays be : A={3,5,10,4,6} -> length=m
+B={12,4,7,2,5} ->length = n
+
+1.UNION operation
+
+When we do a union we will need to check which element is already present, in case it is then we will not copy it into C
+
+here the union becomes C={3,5,10,4,6,12,7,2}
+
+to perform the union there will be 2 times: copying time and comparision time
+the copying time taken is m
+the comparision time is m*n since all the elements of A are compared with all element of B for each iteration
+hence total time take is : m+m*n
+so, this is of the order of O(n^2)
+
+to reduce the time complexity we can use sorted arrays, and use merge method
+if we use merge method our time complexity will be Big Theta(n)
+hence the TC is reduced highly
+
+2. INTERSECTION: common elements are copied
+so every element of A have to be compared with every element of B
+here also the time complexity is O(n^2)
+
+if we use sorted arrays we will compare only uptil we come across an element which is greater than the element we are comparing with
+
+hence the time complexity decreases and bcms big theta(n)
+
+3. DIFFERECE
+A-B means the elements that are present in A but not in B
+
+so we will compare all elements of A with elements of B to check if the same element is present in both the arrays
+hence time complexity bcms O(n^2)
+
+if we use sorted arrays , we can reduce the comparisions done uptil the element where the value is less than the comparing element
+
+here also the time complexity is big theta(n)
+
+4. SET MEMBERSHIP : here we basiclly search for an element whether it is present in a set or not
+
+
+

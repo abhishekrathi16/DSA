@@ -1,0 +1,131 @@
+// Arrays 
+
+Lec4
+----ARRAY BASICS----
+
+arrays are set of similar data types
+ int a[5] --> array of 5 integers
+size of the array = (size of data type)x(size of array)
+
+we can access elemenets of the aaray with help of the indices
+
+declaration of array
+int A[5]; //declaration
+
+initialisation and declaration of array cn be done together
+int B[]={2,4,6,8,10};
+
+we can initialise all elements one by one as well
+A[0]=12;
+A[1]=4;
+A[2]=6;
+
+to access an array we can use a for loop
+//to display an array
+
+for(int i=0;i<5;i++){
+    printf("%d",B[i]);  //printing array with i as index
+}
+
+if we do initialisation like this:
+int A[10]={1,2,3,4,5,6,7} //only 7 out of 10 elements have been initialised
+//the rest elemenets are filled with garbage values, in C++ the values are by default 0
+but still they are called garbage values anyways
+
+if we want to create an array with a size that the user desired then we have to do declaration and initialisation seperately
+
+Code:
+int n;
+scanf("%d",&n);
+int arr[n];  //declaration
+for(int i=0;i<n;i++){
+    scanf("%d",&arr[i]);   //initialisation
+}
+
+
+Lec5
+//structures
+
+Structures are used for defining user defined data structures
+
+example 
+struct rectangle{
+    int length;  //2 bytes of memory
+    int breadth;  // 2 bytes of memory
+}
+
+size of a struct is equal to the total memory consumed by its elements
+
+how to declare a variable of the Structures
+
+int main(){
+    struct rectangle r; //this variable r is the variable of the struct rectangle
+    //it has a size of 4 bytes
+    struct rectangle R={10,4}; //declaration and initialisation together
+
+    //how to access the members of the structures
+    R.length=15; //changes the length of R to 15
+    //so we use dot operater "." to access and change values of a structure
+    printf("Area of Rectangle is %d",R.length*R.breadth);
+}
+
+examples of structures
+
+1. Complex Numbers ==> form of a+ib
+so Complex Numbers are defined in the form of 2 members a,b (real and imaginary)
+
+struct Complex{
+    int real; // for real part
+    int complex; // for complex part
+}
+
+2. Details of students
+
+struct Student{
+    int roll; //for roll no.
+    char name[25]; //for name
+    char dept[10]; //for department
+    char address[50]; //for address
+}
+
+this above structure is taking size = 2+25+10+50=87
+
+//setting up a variable of the struct
+struct Student S;
+S.roll=10;
+S.name="Abhishek"
+
+3. Details of a book
+
+4.
+Suppose we have a set of cards
+cards can be defined with 3 values-> face value and shapes and colors
+say,
+face value = 1(for ace),2,3...10,J,Q(queen),K(king)
+shapes = 0(jack),1(spades),2(hearts),4
+color=0(red),1(black)
+
+to define it with a structure
+struct Card{
+    int face;
+    int shape;
+    int color;
+}
+
+int main(){
+    struct Card c;
+    c.face=1;
+    c.shape=0;
+    c.color=0;
+    //or struct Card c={1,0,0};
+
+    //if we want to declare a deck of 52 cards
+    //we will create a array of structures
+    struct Card deck[52]={{1,0,0},{2,0,0},......,
+                          {1,1,0},{2,1,0},......,
+    }
+    printf("%d",deck[0].face);
+    printf("%d",deck[0].shape); //accessing the array of the structure and displaying it
+}
+
+

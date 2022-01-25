@@ -1,0 +1,213 @@
+Today's topics : pointers,references,functions and parameter passing methods
+
+----pointers and references----
+
+lec 7-8
+all variables that we declare are made inside heap
+
+pointers are used for accessing resources outside the memory
+pointers are used to access heap memory
+pointers are used for parameter parsing
+
+
+address variables in C and C++ are called pointers
+
+suppose we have a data variable : int a=10
+address variable : int *p
+
+a=10[has address 200/201]
+if we do p=&a then p stores the address of a
+
+a[10](200/201)<----p[200](210/211)
+
+printf("%d",a) gives output 10
+printf("%d",*p) is called de-referncing of the pointer, gives output 10
+
+the function we use in C to allocate heap memory using pointer is malloc
+syntax:
+p=(int*)malloc(5*sizeof(int)) //allocates size equal to 5 integers
+
+in C++, the "new" operator is used to allocate heap memory
+p=new int[5]; //allocates size equal to 5 int
+
+when we finish using the pointer that we allocate to heap then we must free it 
+because if we dont free it the heap memory keeps getting stacked up and will run out of space soon, this can prove to be very dangerous if the code is very long 
+
+in C to free a poiter we use the free() method
+syntax:
+free(ptr);
+
+in C++ we use delete[]
+syntax:
+delete[] ptr;
+
+lec 9
+//REFERENCE
+refernces are a very useful thing in C++ while being used for parameter parsing, ie during call by refernce
+
+references are like nicknames of the variables
+
+
+int main(){
+    int a=10;
+    int &r=a; //here r is called REFERENCE
+    //here it means that a is equal to r
+    //this means that the same variable can be used by both names: a and r
+    cout<<a; //prints 10
+    r++;
+    cout<<r; //prints 11
+    cout<<a; //prints 11
+
+}
+
+lec 11
+
+pointer to a structure
+
+struct Rectangle{
+    int length;
+    int breadth;
+};
+
+int main(){
+    struct Rectangle r={10,5}; //l=10, b=5
+    struct Rectangle *p=&r;  //pointer to the structure variable r
+    r.length=20; //updating the value of length to 20
+    (*p).length=20; //updating the value of length using pointer (C syntax)
+
+    //for C++ syntax we use arrow function
+    p->length=20;
+}
+
+//the pointer we create is created inside of stack memory
+//now we will see how to get memory inside heap using pointers to structure
+
+struct Rectangle{
+    int length;
+    int breadth;
+};
+
+int main(){
+    struct Rectangle *p;
+    p=(struct Rectangle*)malloc(sizeof(struct Rectangle)); //assigns memory equal to size of structure in heap
+    p->length=10;
+    p->breadth=5;
+    //this is called dynamic allocation
+}
+
+
+
+lec13
+-----Functions-----
+
+Functions are a piece of code which we can use many times
+They are a grp of related commands which perform a specific task
+We use function to shorten our code by using it again(re-usability)
+
+Monolithic programming - making a large code inside a single body (main() Function), writing all the code inside it
+
+Modular programming -  making different functions for a single code hence shortening it. This increases re-usability and readability and has many more benefits
+
+C is a Modular programming language (also called procedural programming)
+C++ is also Modular as well as Object Oriented 
+
+A program will always start from main() function
+
+Example - function to add 2 numbers:
+
+
+int add(int a, int b)  //this line is called function prototype
+//the parameters here are called formal parameters
+{
+    int c;      //the body of a function is called function definition
+    c=a+b;
+    return c;
+}
+//here value of x is copied in a, and value of y in b
+//the value of sum is passed using c and is stored in z
+
+void main(){
+    int x,y;
+    x=10;
+    y=5;
+    int z=add(x,y);  //this is function call statement
+    //the parameters we pass here are called actual parameters
+    printf("Sum is : %d",z);
+}
+
+when a func is called an activation record of the func is created in the stack with the variables of the func
+once a function stops running the activation record of the function in the stack memory is deleted
+hence functions have the advantage of temporary activation records which get deleted on their own
+
+
+lec 15
+//parameter passing methods
+
+we have 3 types of parameter passing methods:
+1. call by value
+2. call  by reference
+3. call  by address
+
+
+//call by value example by swapping two numbers
+//here if we change the value of formal parameters the value of actual parameters is not changed
+//here if we swap values of x and y, the values of a and b are not swapped
+//so, any changes made in the parameters is not reflected to the original values
+
+void swap(int x, int y){
+    int temp;
+    temp=x;
+    x=y;
+    y=temp;
+}
+
+int main(){
+    int a=10,b=5;
+    swap(a,b);
+    printf("a=%d b=%d",a,b);
+}
+
+
+//call by address
+//any changes made in the values in the function are reflected on the actual parameters
+//here we use pointers to pass by address
+//with help of dereferencing the values are swapped by using the address of the original parameters
+
+void swap(int *x, int *y){
+    int temp;
+    temp=*x; //
+    *x=*y;   //swapping values by usng de-referencing of pointers
+    *y=temp; //
+}
+
+int main(){
+    int a=10,b=5;
+    swap(&a,&b);  //passing address to the function swap
+    printf("a=%d b=%d",a,b);
+}
+
+first we pass the address of our parameters to the function and use pointers to store them
+then we use dereferencing to change the values as shown
+this changes the actual parameters
+
+
+//call by reference
+this is a feature of C++ only
+
+void swap(int &x, int &y){
+    int temp;
+    temp=x; //
+    x=y;   //swapping values by changing values of the references
+    y=temp; //
+}
+
+int main(){
+    int a=10,b=5;
+    swap(a,b);  //passing parameters to the function swap
+    printf("a=%d b=%d",a,b);
+}
+
+this method uses the logic of the references,ie, when we change value of the reference of a variable the change is reflected on the original variable as well
+
+call by refernce is different from other two methods in the way that the swap function is not using a seperate activation record, hence the swap() is behaving like a part of main() hence it becomes like Monolithic programming
+so it is not advisable to use call by reference for large pieces of code since it will become heavy

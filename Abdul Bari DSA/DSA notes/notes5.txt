@@ -1,0 +1,130 @@
+lec 18
+array as parameter
+
+How to pass a array as parameter
+
+void fun(int A[],int n)  //here A[] is like a pointer to the array == *A
+{
+    int i;
+    for(i=0;i<n;i++){
+        printf("%d",A[i]);
+    }
+}
+
+int main(){
+    int A[5]={2,4,6,8,10};
+    fun(A,5);  //arrays are always passed as address
+    //here the array is passed by address and % is passed as value
+}
+
+instead of writing A[] in the formal parameter in fun() we can also write it as *A
+
+since it is call by address any modification made in the array as parameter will reflect on the actual array
+
+arrays cannot be passed by value
+
+
+ex2:
+
+How to create an array in heap memory(ie, dynamic allocation)
+
+int [] fun(int n)  //this function has return type of array
+{
+    int *p; //pointer to store the array allocated in heap
+    p=(int*)malloc(n*sizeof(n*sizeof(int)));  //5 elements array allocated in the heap memory
+    return p;  //we are returning an array made in the heap memory using malloc() 
+}
+//here now p means p=A[5]
+
+int main(){
+    int *A;
+    A=fun(5); //here A is a pointer pointing to the array returned by fun() 
+}
+
+if we use * instead of [] in the function it means that the pointer returned by the function can store both a single pointer or a pointer pointing to an array
+if we use [] we have to return an array only 
+
+
+lec 20
+structure as paramater
+
+we can use call by address and value as well as reference 
+we can pass the entire structure as parameter
+in call by value an entire new object is created when we pass the structure as paramater and the actual parameters values are cpied into the new object
+if any changes are made it is now 
+
+//call by value method
+struct Rectangle{
+    int length;
+    int breadth;
+};
+
+int area(struct Rectangle r1){
+    r1.length++;
+    return r1.length*r1.breadth;
+}
+
+int main(){
+    struct Rectangle r={10,5};
+    printf("%d",area(r));
+    return 0;
+}
+
+
+in call by reference method any change made to the formal parameter is reflected to the actual parameter
+
+//call by reference method
+struct Rectangle{
+    int length;
+    int breadth;
+};
+
+int area(struct Rectangle &r1) //we use ampercand here for call by reference
+{
+    r1.length++;
+    return r1.length*r1.breadth;
+}
+
+int main(){
+    struct Rectangle r={10,5};
+    printf("%d",area(r));
+    return 0;
+}
+
+
+any changes made in the formal parameter will reflected in the actual parameters
+//call by address method
+struct Rectangle{
+    int length;
+    int breadth;
+};
+
+void changeLength(struct Rectangle *r1,int l) //we use pointers to store the address of the object passed by address
+{
+    r1->length=l;  //any change made here is reflected 
+}
+
+int main(){
+    struct Rectangle r={10,5};
+    changeLength(&r,20);  //use ampercand to send the address of the object r
+    return 0;
+}
+
+
+pass by value for arrays is allowed if the array is present inside a structure
+
+struct Test{
+    int A[5];
+    int n;
+}
+
+void fun(struct Test t1){
+    t1.A[0]=10;  //these changes are not reflcted on the actual parameter
+    t1.A[1]=9;
+}
+
+int main(){
+    struct Test t={{2,4,6,8,10},5};
+    fun(t);
+    return 0;
+}

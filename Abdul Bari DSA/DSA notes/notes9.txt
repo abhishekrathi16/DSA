@@ -1,0 +1,216 @@
+lec 51
+static variables in recursion
+
+int fun(int n){
+    if(n>0){
+        return fun(n-1)+n;
+    }
+    return 0;
+}
+
+main(){
+    int a=5;
+    printf("%d)",fun(a));
+}
+
+see the trace tree and activation record in copy
+
+int fun(int n){
+    static int x=0;  //we are using a static variable here
+    if(n>0){
+        x++; //updation
+        return fun(n-1)+x;
+    }
+    return 0;
+}
+
+main(){
+    int a=5;
+    printf("%d)",fun(a));
+}
+
+the static variable can be declared only once and once it is declared the value of the static variable will not be different for every call
+
+This value of x is the value which we get at the last function call
+
+static variables can be treated the same way as global variables are treated while in recursion
+
+
+lec 53
+-----Types of Recursion-----
+tail
+head 
+tree
+indirect
+nested
+
+Tail Recursion - if a recursive func is caling itself and the recursive call is the last statement of the function,no other statement is executed after it, it is called tail recursion
+
+void fun(int n){
+    if(n>0){
+        pf("%d",n);
+        fun(n-1);
+    }
+}
+
+in this type of function the operations are called at calling phase only, no operations are executed at the time of returning phase
+
+Note: All loops can be represented as recursion and vice versa
+
+if we compare the above code to a loop like this:
+
+void fun(int n){
+    while(n>0){
+        pf("%d",n);
+        n--;
+    }
+}
+
+we see that the output here is the same, except we are using a loop here
+hence tail recursion can be easily represented as a loop
+time taken by both of them is O(n)
+space taken will be different, since recursion creates activation records in the stack, hence tail recursion will have space complexity as O(n)
+in loop, only one varialbe is used in one activation record, hence the space complexity is O(1)
+
+This space complexity problem is not the same for all the recursion types
+
+
+lec 54
+Head recursion - here, there are no operations and statements before the recursive call,ie, the call statement has to be the first statement in the function
+All operations are done in the returning call and nothing is done in the calling phase
+
+void fun(int n){
+    if(n>0){
+        fun(n-1);
+        pf("%d",n);
+    }
+}
+
+here we can see that the printing is done in the returning phase only
+
+if we compare head recursion to a loop, we will see that the same output we wont be getting by just using a loop directly, we will need to use indirect methods to convert the head recursion to a loop
+
+void fun(int n){
+    int i=0;
+    while(n>i){
+        i++;
+        pf("%d",i);
+    }
+}
+
+lec 55
+Tree recursion - if a recursive function calls itself more than one time in a single execution of the entire function, we call it a tree recursion
+
+structure:
+fun(n){
+    if(n>0){
+        ....
+        ....
+        fun(n-1);
+        ....
+        ....
+        fun(n-1);
+    }
+}
+
+if the func calls itself only once then it is a linear recursive func
+
+for activation record and trace tree, see copy
+void fun(int n){
+    if(n>0){
+        pf("%d",n);
+        fun(n-1);
+        fun(n-1);
+    }
+}
+
+main(){
+    fun(3);
+}
+
+here we see that the functions are being called twice recursively in the same function definition
+
+we see that once a function call is made the recursion for that specific call is completed before the next func call is executed
+output we get here is: 3211211
+15 recursive calls are made and 15 activation records are generated in this
+first the fun(2) is called which completes its recursion by calling fun(1) which also recurses to fun(0) twice
+see trace tree in copy for more clarity
+
+time complexity: depends on how many calls are made for one call
+we can see that at every level of the trace tree, the number of calls will keep doubling
+we can represent this in the form a sum of GP series
+sum of a gp series for a tracing tree of the above function having n levels is= 2^(n+1)-1
+hence the time complexity is O(2^n)
+space complexity is O(n) bcz there are n activation records left when the recursion is completed
+
+please note that the number of recursions differs for tree recursions, ie, on the no. of children at every node of the recursion trace tree
+hence the order of the tree recursion will also change, in generalised manner we can say that the order of recursion is O(a^n), where a is no. of children at each node and n is number of levels of the trace tree of the tree recursion
+
+
+lec 59
+indirect recursion: in this recursion, there are different functions which call each other in a manner such that it becomes a cycle
+
+void A(int n){
+    if(n>0){
+        ---
+        ---
+        B(n-1);
+    }
+}
+
+void B(n){
+    ---
+    ---
+    C(n-1)
+}
+
+void C(n){
+    ---
+    ---
+    A(n-1)
+}
+
+example:
+
+for trace tree see the copy
+
+void funA(int n){
+    if(n>0){
+        pf("%d",n);
+        funB(n-1);
+    }
+}
+void funB(int n){
+    if(n>1){
+        pf("%d",n);
+        funA(n/2);
+    }
+}
+
+
+here we can see that the functions funA and funB are calling each other and they have difference return values and different updations
+
+
+lec 59
+nested recursion - here when we make a func call, the parameter taken is also a recursion
+
+void fun(int n){
+    if(...){
+        ...
+        ...
+        fun(fun(n-1));
+    }
+}
+
+example:
+int fun(int n){
+    if(n>100){
+        return n-10;
+    }else{
+        return fun(fun(n+11));
+    }
+}
+
+see copy for trace tree of this func
+
+nested recursions expand very largely hence we dont generaly use them to represent the nested recursion
