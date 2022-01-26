@@ -1,0 +1,89 @@
+LINKED LISTS
+lec 171
+why do we need linked lists?
+-> problem with arrays is that the size of an array remains constant always, so, if we declare an array once it cant be increased or decreased
+
+and during runtime, it is difficult to determine what size is needed
+
+as programmers we dont know what size of list a user wants, so we need to use a linked list in order to solve this size issue
+
+revision:
+int A[5]; //creates array of 5 elements in stack
+int *p = new int[5]; //creates array of 5 elements in heap
+
+if the user wants more elements then space is not enough and if that much space which has been allocated cant be used, then space is wasted
+
+
+now for linked lists, lets take a pointer called "first" in the stack and allocate memory for a node in the heap as well as allocate another space in the heap whic contains address to the next node in the list 
+
+hence every element has space for data and space for address to the next element, and this space together is called a node
+
+the nodes are linked to each other and we can easily insert or remove elements in the linked list at any point by just changing the links
+
+linked lists are created in heap only
+
+Linked list is a collection of nodes where each node store data and address to the next node
+
+for ex:
+[200]->[8,210]->[3,270]->[7,300]->[12,NULL]
+
+the first node just contains address to the first data node of the linked list and is called head or first.
+
+each node is linked to the next node by means of its address
+
+so to define a node, we need to define two things : a data variable and a pointer to the next node
+The pointer used is node type (that is its own type)
+
+Node structure is : [data|next]
+
+in C we use a structure struct Node
+
+struct Node{
+    int data;
+    struct Node* next; //pointer to the next node of type node itself
+};
+
+this kind of structure is called a self referential structure
+we use either a class or a struct in C++ also
+
+struct Node{
+    int data; //takes 2 bytes
+    struct Node* next;  //takes 2 bytes
+};
+hence the struct here takes 4 bytes
+hence every node (for int data) takes 4 bytes
+size will vary for every data type
+
+to declare a node,in C:
+struct Node *p;
+p=(struct Node*)malloc(sizeof(struct Node));
+
+in C++,
+struct Node* p;
+p=new Node;
+
+to initialise a node:
+p->data=10; //assign data value
+p->next = 0; //address to next node;
+
+0 means NULL which means the pointer isnt pointing to anywhere else
+
+suppose we have 2 pointers p and q, ad have a list of 2 nodes
+list is: p[200]->[8|210]->[3|...]->...
+struct Node *p,*q;
+
+1. q=p; means that p also points where q is pointing
+hence the address stored in p also gets stored in p
+
+2. q=p->next means that p now points to the next node of p
+
+3. p=p->next means that the value of p has been updated and it now points to the next node of its previous node
+
+if p is not pointing anywhere , it will have address NULL or 0
+so to check if p is pointing to any node or not(NULL), we use this statement:
+if(p==NULL)  or  if(p==0)  or  if(!p)
+
+if(p!=NULL) will be true if p is pointing at some node
+
+if a node in the list doesnt point to any location, then that node is thr last node in the list
+it can be checked using if(p->next==NULL)
