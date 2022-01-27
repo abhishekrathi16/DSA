@@ -1,0 +1,30 @@
+lec 174
+
+display a linked list
+
+for this we will first learn how to traverse a linked list
+we start from the first node
+please note that the first pointer (head) must not be disturbed,so we will use a temporary pointer to traverse the linked list
+
+struct Node *p = first;
+// p=p->next means that p has moved to the next node
+//this process has to be done repeatedly in order to travers the linked list
+we will stop once the linked list reaches p=0 or NULL
+
+code:
+while(p!=NULL){
+    p=p->next;
+}
+
+while traversing we can do a lot of things, like searching sorting inserting, counting nodes, etc
+
+to display
+
+display(struct Node *p){
+    while(p!=NULL){
+    printf("%d->",p->data);
+    p=p->next;
+}
+}
+
+
