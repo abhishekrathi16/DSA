@@ -28,3 +28,279 @@ display(struct Node *p){
 }
 
 
+recursive method to display a linked list
+
+void Display(struct Node *p){
+    if(p!=NULL){
+        printf("%d",p->data);
+        Display(p->next);
+    }
+}
+
+main(){
+    Display(first);
+}
+
+here the output is :  8 3 7 12 9
+
+time taken depends on the number of calls made, hence the number of nodes
+hence time is of O(n)
+recursion uses stack for each call, n+1 activation records are created hence the space taken is O(n)
+
+
+if we change the order of recursion, then the printing is done in reverse
+
+recursive method to display a linked list
+
+void Display(struct Node *p){
+    if(p!=NULL){
+        Display(p->next);
+        printf("%d",p->data);
+    }
+}
+
+main(){
+    Display(first);
+}
+
+here output is: 9 12 7 3 8
+
+
+To count the number of nodes in a linked list
+we will traverse the linked list and add +1 to a counter everytime we traverse one node
+
+int Count(struct Node* p){
+    int c=0;
+    while(p!=NULL){
+        c++;
+        p->next;
+    }
+    return c;
+}
+
+time taken is the same as traversing of a linked list, hence O(n)
+space is O(1)
+
+by recursion,
+code:
+
+int count(struct Node* p){
+    if(p==NULL){
+        return 0;
+    }
+    return count(p->next)+1;
+}
+
+time = O(n)
+space = O(n)
+
+other ways we can write down the same function:
+int count(struct Node* p){
+    if(p!=NULL){
+        return count(p->next)+1;
+    }
+    return 0;
+}
+
+int count(struct Node *p){
+    int x=0;
+    if(p){
+        x=count(p->next);
+        return x+1;
+    }else{
+        return 0;
+    }
+}
+
+
+To find the sum of all elements in a linked list
+to add we need to traverse all the nodes
+
+int Add(struct Node* p){
+    int sum=0;
+    while(p!=NULL){
+        sum+=p->data;
+        p=p->next;
+    }
+    return sum;
+}
+
+recursive method:
+
+int Add(struct Node* p){
+    if(p==0){
+        return 0;
+    }else{
+        return Add(p->next)+p->data;
+    }
+}
+
+
+Finding the max element in a linked list
+
+we will traverse the elements in a linked list and appoint a max variable, which will get updated if p->data > max
+
+here we will assign value max=MIN_INT
+MIN_INT = -32768 for C language
+
+code:
+
+int max(struct Node* p){
+    int m=MIN_INT;
+    while(p){
+        if(p->data > m){
+            max=p->data;
+        }
+        p=p->next;
+    }
+    return m;
+}
+
+recursive method: 
+int max(Node *p){
+    if(p==0){
+        return MIN_INT;
+    }else{
+        x=max(p->next);
+        if(x > p->data){
+            return x;
+        }else{
+            return p->data;
+        }
+    }
+}
+
+this code can also be written as:
+
+int max(Node *p){
+    int x=0;
+    if(p==0){
+        return MIN_INT;
+    }
+    x=max(p->next);
+    return x>p->data?x:p->data; //using ternary operator
+}
+
+
+finding minimum has the same process
+
+Searching in a linked list
+
+we have 2 procedures - linear and binary
+we cant perform binary search in a linked list, bcz we cant reach the middle of a linked list in constant time, directly
+so it doesnt match the algo for binary search
+
+hence we will use only linear search
+we will traverse the list and compare the key with the elements and if found, we will update it
+
+Node* search(Node* p,int key){
+    while(p){
+        if(key==p->data){
+            return p;
+        }
+        p=p->next;
+    }
+    return NULL;
+}
+
+recursive method:
+Node* search(Node* p,int key){
+    if(p==NULL){
+        return NULL;
+    }else{
+        if(p->data==key){
+            return p;
+        }
+        return search(p->next,key);
+    }
+}
+
+
+improving linear search by transposition and move to head methods
+
+transposition means moving the recently searched element ahead by 1 position
+
+movng to head means moving the recently searched key to the first position of the list
+
+for the move to front method we will need 2 pointers p and q
+by using p we will check if key==p->data, if it doesnt match then we do p=p->next and position q at the previous position of p
+
+and then keep traversing, where ever the value if found, we make p as the head node using the following code
+
+Node* search(Node *p,int key){
+    struct Node* q = NULL;
+    while(p){
+        if(key==p->data){
+            q->next=p->next;
+            p->next=first;
+            first=p;
+        }
+        q=p;
+        p=p->next;
+    }
+}
+
+
+Insertion in a linked list
+for this let us assume that the linked list has indices similar to that of an array starting from 0 to n-1
+
+we can insert at 2 possible positions
+1. Insert before first
+2. insert after a given position
+
+1.
+first step is to create a new node and store the data in it
+make it point to first and then make first point to the new node
+
+the steps are in code as:
+
+Node *t = new Node; //use malloc for C
+t->data=x;
+t->next=first;
+first=t;
+
+this process takes O(1) order of time
+
+2.
+lets say we need to insert a node after position 4(index 3):
+here we will need to make the 4th node point to the new node and make the new node point at the next node of 4th node
+we traverse to the required position, to the 4th position here
+for this we need to move p from first by 3 times (pos-1 times)
+
+code:
+node *t = new Node;
+t->data=x;
+p=first;
+for(i=0;i<pos-1;i++){
+    p=p->next;
+}
+t->next=p->next;
+p->next=t;
+
+this process takes O(n) time since the for loop here takes O(n) time to move to the nth position and rest statements are of O(1) complexity
+here, minimum time is O(1) [for insertion after first node] and max time is O(n) [for insertion after the node before the last node]
+this method doesnt work for insetion ater last node 
+
+
+Now this is a generalised code for insetion:
+
+void Insert(int pos,int x){
+    Node *p,*t;
+    if(pos==0){
+        t=new Node;
+        t->data=x;
+        t->next=first;
+        first=t;
+    }else if(pos>0){
+        p=first;
+        for(i=0;i<pos-1 && p;i++){
+            p=p->next;
+        }
+        if(p){
+            t=new Node;
+            t->data=x;
+            t->next=p->next;
+            p->next=t;
+        }
+    }
+}
