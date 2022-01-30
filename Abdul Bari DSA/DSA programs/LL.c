@@ -134,20 +134,104 @@ struct Node* ImpLsearch(struct Node *p,int key){
     return NULL;
 }
 
+void Insert(struct Node* p,int index,int x){
+    struct Node *t;
+    if(index<0 || index > count(p)){
+        return;
+    }
+    t=(struct Node*)malloc(sizeof(struct Node));
+    t->data=x;
+    if(index==0){
+        t->next=first;
+        first=t;
+    }else{
+        for(int i=0;i<index-1;i++){
+            p=p->next;
+        }
+        t->next=p->next;
+        p->next=t;
+    }
+}
+
+void SortedInsert(struct Node* p,int x){
+    struct Node *t,*q=NULL;
+    t=(struct Node*)malloc(sizeof(struct Node));
+    t->data=x;
+    t->next=NULL;
+    //first we check if there are no nodes at all
+    if(first==NULL){
+        first=t;
+    }else{
+        while(p && p->data < x){
+            q=p;
+            p=p->next;
+        }
+        //here we check if the node inserted is less than the data in first node itself
+        if(p==first){
+            t->next=first;
+            first=t;
+        }else{
+            t->next=q->next;
+            q->next=t;
+        }
+    }
+}
+
+int Delete(struct Node *p,int index){
+    struct Node *q;
+    int x=-1,i;
+    if(index<1 || index>count(p)){
+        return -1;
+    }
+    if(index==1){
+        q=first;
+        x=first->data;
+        first=first->next;
+        free(q);
+        return x;
+    }else{
+        for(i=0;i<index-1;i++){
+            q=p;
+            p=p->next;
+        }
+        q->next=p->next;
+        x=p->data;
+        free(p);
+        return x;
+    }
+}
+
+int isSorted(struct Node* p){
+    int x=-65536;
+    while(p){
+        if(p->data < x){
+            return -1;
+        }else{
+            x=p->data;
+            p=p->next;
+        }
+    }
+    return 1;
+}
 
 int main(){
-    int A[]={3,5,7,10,15,2,4};
+    int A[]={3,5,7,10,15};
     create(A,5);
-    rdisplay(first);
-    printf("\nLength is: %d\n",rcount(first));
-    printf("Sum is: %d\n",Rsum(first));
-    printf("Max is : %d\n",rmax(first));
-    struct Node *temp;
-    temp=RLsearch(first,10);
-    if(temp){
-        printf("Key is found \n");
-    }else{
-        printf("Key not found\n");
-    }
+    // rdisplay(first);
+    // printf("\nLength is: %d\n",rcount(first));
+    // printf("Sum is: %d\n",Rsum(first));
+    // printf("Max is : %d\n",rmax(first));
+    // struct Node *temp;
+    // temp=RLsearch(first,10);
+    // if(temp){
+    //     printf("Key is found \n");
+    // }else{
+    //     printf("Key not found\n");
+    // }
+    // Insert(first,3,12);
+    // SortedInsert(first,18);
+    Delete(first,3);
+    display(first);
+
     return 0;
 }

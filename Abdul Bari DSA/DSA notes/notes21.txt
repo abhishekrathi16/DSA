@@ -1,0 +1,148 @@
+lec 188
+
+creating a linked list using Insert() function
+
+if there are no nodes in the linked list we can create the first node using the call Insert(0,x);
+
+then insert at the 1st index(posn 0) by using Insert(1,x);
+and so on
+using these methods we can create a linked list
+
+There is anther method to create a linked list using insert at end of the linked list
+
+lets say we have a list of 3 nodes, then when we insert at the end, we make last pointer point to this node and keep on inserting again
+
+suppose we have just a single node [8|NULL], hence the first and last both must point at this node only
+
+then we can insert a new node at the end using last and keep inserting so on
+
+code:
+void InsertLast(int x){
+    Node* t=new Node;
+    t->data=x;
+    t->next = NULL;
+    if(first==NULL){
+        first=last=t;
+    }else{
+        last->next=t;
+        last=t;
+    }
+}
+
+this code will always insert a node in the list since there are no invalid posns here at all bcz we always inserting at the last
+
+Inserting in a sorted list, at a sorted postion
+lets say we have a list [3,7,9,15,20]
+
+if we need to insert 18, it sd be before 20
+and if 8, then it sd be inserted before 9
+
+first we take a pointer p pointing at the first node which we will traverse one by one checking if the node data less than the element or not
+We will take a tailing pointer q which will follow p. if p moves ahead by 1 then q does too. q remains one node behind p always
+q will help us to insert a node in the list at the needed posn
+
+when we reach the node which is greater than the element to be inserted then we will insert the new node after q using the code needed for insertion after a node
+
+code:
+
+p=first;
+q=NULL;
+while(p && p->data<x){
+    q=p;
+    p=p->next;
+}
+t=new Node;
+t->data=x;
+t->next=q->next;
+q->next=t;
+
+Time taken here is O(n) bcz of the traversing done by the while loop
+the best case can be O(1) and worse can be O(n)
+
+the above code has a problem, it doesnt show what happens if the element is smaller than the first node
+
+check the code in LL.c for a better representation of the code
+
+
+
+Deleting a node in a linked list
+here we have 3 cases: Deleting the first node and Deleting a node at a given postion
+
+1. if we delete the first node, then we will need to make the next node as first
+
+when we delete a node, make sure that we are deallocating the memory of that node from the heap
+
+to delete the first node, we take a pointer p at the first node, then point first to the next node
+then delete p from the memory
+code:
+
+Node* p = first;
+first=first->next; 
+x=p->data;  //stores the value that has been deleted
+delete p;  //deallocating the memory of the deleted node
+
+
+2. to delete a node at a given posn first we traverse to the position and then reconnect the pointers of the previous node to the next node of the current node
+This is how the nodes are reconnected
+now we delete the current node by pointing a pointer p at the curr node and deleting it
+
+we are using q as well in order to help with the traversing and deletion
+
+Node *p = first;
+Node *q = NULL;
+
+for(i=0;i<pos-1;i++){
+    q=p;
+    p=p->next;
+}
+q->next = p->next;
+x=p->data;
+delete p;
+
+
+generalisd function:
+
+int Delete(int pos){
+    Node *p,*q;
+    int x,i;
+    if(pos=1){
+        x=first->data;
+        p=first;
+        first=first->next;
+        delete p;
+        return x;
+    }
+    else{
+        for(i=0;i<index-1;i++){
+            q=p;
+            p=p->next;
+        }
+        q->next=p->next;
+        x=p->data;
+        free(p);
+        return x;
+    }
+    }
+}
+
+
+To check if the list is sorted
+here we just need to traverse the list and keep checking if the data of the current node is greater than the data of the previous node
+
+here we will take a int variable x, and store in it the data of the previous node
+and as we traverse we keep checking if the data of curr node is greater than x or not, then update x with data of the curr node
+we continue until we finish the list or come across a node with a smaller value than x
+
+code:
+int x = -32768;
+Node *p = first;
+while(p!=NULL){
+    if(p->data<x){
+        return false;
+    }
+    x=p->data;
+    p=p->next;
+}
+return true;
+
+time taken maybe order of n or 1
