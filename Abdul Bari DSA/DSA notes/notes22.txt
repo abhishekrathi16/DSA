@@ -1,0 +1,171 @@
+lec 196
+
+removing duplicate elements from a sorted linked list 
+
+lets say we have a list 3,5,5,8,8,8
+
+here to remove duplicates we need to check whether the current node and the next node are same or not
+if they are same then we delete the next node
+
+here we will use both q and p to traverse the list and also check if the nodes are different or not
+
+
+Node *p=first;
+Node *q=first->next;
+
+while(q!=NULL){
+    if(p->data!=q->data){
+    p=q;
+    q=q->next;
+}else{
+    p->next=q->next;
+    delete q;
+    q=p->next;
+}
+}
+
+time taken is O(n)
+
+
+Reversing a linked lists:
+we can reverse a linked list by 2 methods:
+1. reversing elements
+2. reversing the links
+
+In a linked list, we prefer reversing the links rather than reversing the elements
+
+we take an array equal to the size of the linked list
+and copy the data of the linked list in the array by traversal using a pointer p and i as a counter variable for the loop
+
+after copying all elements, we move p to the first, we reverse copy the elements from the array to the list, by decrementing i and traversing p
+code:
+
+p=first;
+i=0;
+while(p!=NULL){
+    A[i]=p->data;
+    p=p->next;
+    i++;
+}
+
+p=first;
+i--;
+while(p!=NULL){
+    p->data=A[i];
+    i--;
+    p=p->next;
+}
+
+This code takes an array of size equal to the size of the linked list
+Time taken is O(n) since there are 2 loops working for n elements in the list
+
+method 2:
+sliding pointers: we take 3 pointers p,q,r
+p will point at the first element and q and r dont point anywhere
+when p moves to 2nd element, q moves to the previous posn of q
+then p moves forward, q moves to 2nd posn and r moves to the previous posn of q
+this is called sliding pointers 
+
+code to reverse the LL:
+p=first;
+q=NULL;
+r=NULL;
+while(p!=NULL){
+    r=q;
+    q=p;
+    p=p->next;
+    q->next=r;
+}
+first=q;
+
+
+we will be using this concept to reverse a LL by reversing the links so that we dont forget the links when the pointers move forward
+we will slide and reverse the links of the node at q by doing q->next=r
+p will help to keep hold of the address of the next node of q
+
+we dont reversal in general in a linked list bcz the process might be problematic
+the nodes might contain a lot of data and records, which will get swapped
+that might take alot of memory to be stored in an array
+this will become problematic
+but instead if we reverse the links, it will take a small value of pointers to be initialised
+
+
+recursive method to reverse a linked list:
+we will point p to the next node at every call and also a tailing pointer q which points at the previous node of p
+and when we return from the recursion, we will reverse the links
+
+void Reverse(Node *q,Node *p){
+    if(p!=NULL){
+        Reverse(p,p->next);
+        p->next=q;  //links are reversed at the returning time
+    }else{
+        first = q;
+    }
+}
+
+
+Concatenating 2 linked lists
+lets say we have 2 lists 2,9,6,8 and 10,4,7
+
+first we take a pointer p and loop it to the last node of the first list , then assign p->next to the second list's first pointer
+
+p=first;
+while(p->next!=NULL){
+    p=p->next;
+}
+p->next=second;
+//it is optional to remove the pointer second
+second=NULL;
+
+Time taken here is O(n)
+
+
+lec 203
+merging of 2 linked lists
+
+merging is the process of combining 2 sorted lists into a single sorted lists
+in arrays we needed another array to merge 2 arrays, but in LL we dont need a third list 
+
+we have 2 lists: 2(first),8,10,15  and  4(second),7,12,14
+we will also take another pointer called third and a third which will point at the last of the merged list
+
+first we will check which of first and second is smaller and we will point both third and last at the smaller of the two
+we will move first to first->next and make last->next=NULL
+now we compare second and first again, whichever is smaller, we point last to that node, then move second to second->next,
+then we make last->next+NULL again
+then we point the last->next to the next node which we find as next in order after comparison
+this process will keep continuing when both lists end
+
+code:
+
+if(first->data<second->data){
+    third=last=first;
+    first=first->next;
+    last->next=NULL;
+}else{
+    third=last=second;
+    second=second->next;
+    last->next=NULL;
+}
+while(first!=NULL && second!=NULL){
+    if(first->data < second->data){
+        last->next=first;
+        last=first;
+        first=first->next;
+        last->next=NULL;
+    }else{
+        last->next=second;
+        last=second;
+        second->next=second->next;
+        last->next=NULL;
+    }
+}
+if(first!=NULL){
+    last->next=first;
+}
+if(second!=NULL){
+    last->next=second;
+}
+
+time take is O(n) or theta(m+n)
+
