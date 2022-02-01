@@ -1,0 +1,215 @@
+lec 205
+
+we will check whether a linked list is looping or is linear
+
+A liinked list is linear if the list is ending with a NULL, and it is looping if the last node is pointing at some other node, ie, no NULL is found
+
+to check if a list is NULL or not, we will need to traverse the list and see whether we counter a NULL value or not
+
+to check if the list is looping or not, we will take 2 pointers p and q
+at first p and q both point at the first node. the pointer p moves ahead by one node and q moves ahead by 2 nodes. if the list is looping, both the pointers will meet at some point. if the list is linear the pointer will never meet, since the faster pointer will reach NULL before the other and the traversal will stop
+
+code:
+
+isLoop(Node *f){
+    Node *p,*q;
+    p=q=f;
+    do{
+        p=p->next;
+        q=q->next;
+        q=q!=NULL? q->next:NULL;
+    }while(p && q && p!=q);
+    if(p==q) return true;
+    else return false;
+}
+
+time taken O(n) 
+
+
+
+-----------CIRCULAR LINKED LISTS----------
+
+what is a circular linked list?
+a linked list in which the last node points on the first node is called circular linked list
+So a CLL is a collection of nodes circularly connected
+
+here the first node is rather called the head node
+
+we have a lot of real life examples of CLLs, like gallery or contacts in a smartphone
+
+here we are going to learn about singly linked circular list
+we wont study much about it bcz the functions are more or less the same in code, only implementation is different
+
+if only one node is present, the node points to itself
+
+if there are no nodes, then the nodes are NULL, this cant be shown as circular bcz the node actually doesnt exist
+
+(for different ways of representation of a LL see copy)
+
+the functions of CLL will be more or less same with minor changes
+
+in SLL, the last node has NULL so we can stop when we reach the NULL, but in CLL? how do we stop ? lets see
+
+To display a CLL:
+we have a pointer p  which is pointing at head node
+we will do p=p->next while printing the node data
+we will stop when we reach head again
+we are using a do while loop here since p is equal to head at the very first looping and the loop will stop at once
+code:
+
+void display(Node *p){
+    do{
+        printf("%d",p->data);
+        p=p->next;
+    }while(p!=head);
+}
+
+
+using recursion:
+using recursion, we will need to check if the value of p is on head or not
+when p is equal to head for the first time, flag will bcm 1
+this flag variable will be static so that the value doesnt stay changed, even after display is called once after recursion
+
+code:
+
+void display(Node *p){
+    static int flag=0;
+    if(p!=head || flag==0){
+        flag=1;
+        printf("%d",p->data);
+        display(p->next);
+    }
+    flag=0;
+}
+
+
+Inserting in a CLL:
+we can insert a node before the head node and after any other node(any other position)
+
+to insert after a given node:
+first we create a new node with the data we want to insert
+we traverse to the given position and then make the node's next pointer point to the new node and new node's next pointer to the current node's next 
+
+code:
+Node *t;
+Node *p=Head;
+for(i=0;i<pos-1;i++){
+    p=p->next;
+}
+t=new Node;
+t->data=x;
+t->next=p->next;
+p->next=t;
+
+here time taken is equal to O(n) that is the number of traversal made
+
+for inserting before the head node we will traverse to the node before the head node and insert the node before the head node and adjust the links as reqd
+
+moving the head is your choice, whether you want the new node to be the last node(or node before head) or make it the new head itself
+
+code:
+Node *p=Head;
+Node *t=new Node;
+t->data=x;
+t->next=Head;
+while(p->next!=Head){
+    p=p->next;
+}
+p->next=t;
+Head=t;
+
+after combining both the above codes,we write a single code:
+void Insert(int pos,int x){
+    Node *t,*p;
+    int i;
+    if(pos==0){
+        t=new Node;
+        t->data=x;
+        if(Head==NULL){
+            Head=t;
+            Head->next=Head;
+        }else{
+            p=Head;
+            while(p->next!=Head) p=p->next;
+            p->next=t;
+            t->next=Head;
+            Head=t;
+        }
+    }else{
+        p=Head;
+        for(i=0;i<pos-1;i++){
+            p=p->next;
+        }
+        t=new Node;
+        t->data=x;
+        t->next=p->next;
+        p->next=t;
+    }
+}
+
+
+Deleting a node from a linked list
+
+we can delete from 2 positions:  Deleting head node and delete from any other position
+
+to delete from a given position:
+we take a pointer p, starts from head and move it to the node before the node which we need to delete
+then take another node q, which will point on q's next
+
+code:
+p=Head;
+for(i=0;i<pos-2;i++){
+    p=p->next;
+}
+q=p->next;
+p->next=q->next;
+x=q->data;
+delete q;  //free(q)
+
+time taken is O(n) [worst case] and O(1) [best case]
+
+Deleting head node
+when we delete the head node then the last node must point on the next node of head
+
+code:
+p=Head;
+while(p->next!=Head){
+    p=p->next;
+}
+p->next=Head->next;
+x=Head->data;
+delete Head;
+Head=p->next;
+
+time taken is O(n) since we need to move to the last node
+
+
+general func:
+
+int Delete(int pos){
+    Node *p,*q;
+    if(pos==1){
+        p=Head;
+        while(p->next!=Head){
+            p=p->next;
+        }
+        x=Head->data;
+        if(p==Head){
+            delete Head;
+            Head=NULL;
+        }else{
+            p->next=Head->next;
+            delete Head;
+            Head=p->next;
+        }
+    }else{
+        p=Head;
+        for(i=0;i<pos-2;i++){
+            p=p->next;
+        }
+        q=p->next;
+        x=q->next;
+        delete q;
+    }
+    return x;
+}

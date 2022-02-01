@@ -385,7 +385,7 @@ void Merge(struct Node *p, struct Node *q)
     }
     while (p != NULL && q != NULL)
     {
-        if (first->data < second->data)
+        if (p->data < q->data)
         {
             last->next = p;
             last = p;
@@ -410,12 +410,28 @@ void Merge(struct Node *p, struct Node *q)
     }
 }
 
+int isLoop(struct Node *f){
+    struct Node *p,*q;
+    p=q=f;
+    do{
+        p=p->next;
+        q=q->next;
+        q=q?q->next:q;
+    }while(p && q && p!=q);
+    if(p==q) return 1;
+    else return 0;
+}
+
 int main()
 {
+    struct Node *t1,*t2;
+    t1=first->next->next;
+    t2=first->next->next->next->next;
+    t2->next=t1;
     int A[] = {10, 20, 30, 40, 50};
     create(A, 5);
-    int B[] = {5, 15, 25, 35, 45};
-    create2(B, 5);
+    // int B[] = {5, 15, 25, 35, 45};
+    // create2(B, 5);
     // rdisplay(first);
     // printf("\nLength is: %d\n",rcount(first));
     // printf("Sum is: %d\n",Rsum(first));
@@ -433,12 +449,12 @@ int main()
     // RemoveDuplicates(first);
     // Reverse3(NULL,first);
     // Concat(first, second);
-    Merge(first,second);
-    display(first);
-    printf("\n");
-    display(second);
-    printf("\n");
-    display(third);
-    printf("\n");
+    // Merge(first,second);
+    // display(first);
+    // printf("\n");
+    // display(second);
+    // printf("\n");
+    // display(third);
+    // printf("\n");
     return 0;
 }
