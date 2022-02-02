@@ -18,8 +18,8 @@ void create(int A[],int n){
     for(i=1;i<n;i++){
         t=(struct Node*)malloc(sizeof(struct Node));
         t->data=A[i];
-        t->next=NULL;
-        t->prev=t;
+        t->next=last->next;
+        t->prev=last;
         last->next=t;
         last=t;
     }
@@ -71,7 +71,7 @@ void Insert(struct Node *p,int index, int x){
 
 int Delete(struct Node *p,int index){
     int x=-1,i;
-    if(index>0 || index<length(first)){
+    if(index<1 || index>length(first)){
         return -1;
     }
     if(index==1){
@@ -98,11 +98,8 @@ void Reverse(struct Node *p){
         p->next=p->prev;
         p->prev=temp;
         p=p->prev;
-        if(p->next==NULL){
-            p->next=p->prev;
-            p->prev=NULL;
+        if(p!=NULL && p->next==NULL){
             first=p;
-            break;
         }
     }
 }
@@ -111,9 +108,9 @@ int main(){
     int A[]={10,20,30,40,50};
     create(A,5);
     printf("Length is %d: \n",length(first));
-    Insert(first,3,100);
-    // Delete(first,3);
-    // Reverse(first);
+    // Insert(first,3,100);
+    // Delete(first,2);
+    Reverse(first);
     Display(first);
     return 0;
 }
