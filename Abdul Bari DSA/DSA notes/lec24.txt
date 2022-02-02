@@ -1,0 +1,234 @@
+---------DOUBLY LINKED LIST----------
+
+A DLL is a list in which a node is connected to both the previous and next node which will allow us to cruise both sides in the list,that is forward and backwards
+
+the node in a DLL has 2 pointers -  prev and next
+node is like : [prev|data|next]
+
+code for the node is:
+
+struct Node{
+    struct Node *prev;
+    int data;
+    struct Node *next;
+};
+
+to create a new node:
+
+struct Node *t;
+t = new Node;
+t->data=x;
+t->prev=NULL;
+t->next=NULL;
+
+All operations that can be performed on a SLL can be performed on a DLL as well. The only difference is that the node is connected both sides and we can move both sides in the list
+
+
+
+Inserting in a DLL:
+1. insertion before first
+here we will need to modify 2 links: first's prev and new node's next
+Then make the new node inserted as the first node
+
+code:
+Node *t=new Node;
+t->data=x;
+t->prev=NULL;
+t->next=first;
+first->prev=t;
+first=t;
+
+time taken here is constant
+
+2. insertion at any other position(after a given index)
+here we will need to modify 4 links: both prev and next link of the new node, and also the prev of the next node and next of previous node
+
+the prev pointer of the next node can be altered only if the next node is not NULL, that is the current node is not the last node of the list
+
+before that we will traverse to the required index
+code:
+
+Node *t=new Node;
+t->data=x;
+for(i=0;i<pos-1;i++){
+    p=p->next;
+}
+t->next=p->next;
+t->prev=p;
+if(p->next){
+    p->next->prev=t;
+}
+p->next=t;
+
+the time complexity here is O(n)
+here the minimum number of links modified is 3,and max no. is 4
+
+
+Deleting in DLL:
+1. Deleting the first node:
+we will take a pointer p=first and then move first to first->next, then free(p) and make first->prev=NULL
+code:
+
+p=first;
+first=first->next;
+x=p->data;
+delete p;
+if(first) first->prev=NULL;
+
+2. Deleting from a given position
+
+when we delete a node in btwn 2 nodes, we will modify 2 node's pointers and delete the reqd node
+we will do it using a single pointer
+first we will traverse to the reqd node
+if the node p is the last node, there is no next node, so it can be accessed only if it is present there. we will need to check for this
+code:
+
+p=first;
+for(i=0;i<pos-1;i++){
+    p=p->next;
+}
+p->prev->next=p->next;
+if(p->next) p->next->prev=p->prev;
+x=p->data;
+delete p;
+
+analysis:
+only one pointer reqd,that is, p
+the time depends on the pos of p, hence we take the time as O(n)
+
+
+displaying a DLL has the same code as that of a SLL
+code:
+
+p=first;
+while(p){
+    printf("%d ",p->data);
+    p=p->next;
+}
+
+
+reversing a DLL:
+we will reverse a DLL by using prev and next pointer
+we will traverse the linked list and interchange their next and prev pointers. when p becomes null, assign first to last node
+code:
+
+p=first;
+while(p){
+    temp=p->next;
+    p->next=p->prev;
+    p->prev=temp;
+    p=p->prev;
+    if(p->next==NULL && p!=NULL){
+        first=p;
+    }
+}
+
+
+---CIRCULAR DOUBLY LINKED LIST---
+this is a doubly linked list(hence can be accessed bidirectionaly way) and also a circular linked list
+
+to traverse it, we will loop through the linked list using next pointer and once we reach the head node,we will end the loop there
+
+code:
+
+p=head;
+do{
+    printf("%d ",p->data);
+    p=p->next;
+}while(p!=head);
+
+
+Insert operation:
+if we want to insert a node after a given posn, the process is same as the DLL insertion procedure
+the only difference is in insertion before the head
+here we will have to modify the last node's next link as well as the head node's prev pointer
+
+here we wont have to traverse the LL to reach the last node, since head->prev is already last and we can easily use it here
+
+The delete operation is the same as that of DLL and only deletion of head node is different
+
+if there is only one node in the list, that is head node then the head node's prev and next points to itself
+
+code for insertion and deletion(write by yourslf)
+
+
+Comparision of Linked Lists:
+we have studied linear SLL, linear DLL, circular SLL and circular DLL
+
+1. space Comparision : along with data, pointers consume space as well, hence the space consumed by the pointers of both the DLLs is double of that of both the SLLs
+
+2. Insert : inserting before head in Linear SLL and lineaer/circular DLL takes O(1) time, and for circular SLL it takes O(n)
+
+in all other cases, O(n) time is taken for all the linked Lists
+
+4 links are modified in case of DLLs and 2 links in SLL
+
+3. Delete:  same as insert
+
+4. traverse: O(n) for all linked lists
+
+which linked list we need to use? it depends on our requirements
+if we dont need to traverse a LL bi-directionaly, we dont need to use a DLL
+logically, circular DLL is is the best for all cases, but it consumes the most space ,hence if space is freely available, we should use CDLL
+
+
+Comparision of Arrays with Linked Lists:
+arrays and linked lists are the 2 physical data structures
+1. array can be created in heap as well as stack but LLs can be created in heap only
+2. array have a fixed size and LLs have a variable size
+arrays have a fixed space hence we might be wasting space or the space may not be enough for us. hence we sd use arrays only if we know how much data is to be stored. otherwise we use linked lists since they have variable size and can be changed as needed
+3. space taken up by ll of same size as that of an array is larger than the array since arrays dont need to use pointers
+4. accessibility:  array elements can be directly accessed and linked lists need to be traversed
+5. arrays have faster access since they are contained in stack as well
+6. arrays can store only homogenous data types and LL can store all types of data in a single node
+7. insertion: inserting in an array at last is O(1) and at other posns it is O(n)
+in LL,insert at first is O(1) and at last and other positions it is O(n)
+hence more or less the time taken here is same, and usage depends on which side you want to insert
+movement and shifting of data is more costly in arrays than in linked lists
+8. deletion: same as insertion 
+9. searching: in arrays we can perform linear search[O(n)] and binary search[O(log n)], in LL, only linear search can be performed hence it takes O(n), if we try to apply binary search,it will take O(nlogn), which will bcm worthless
+this is bcz the mid of an array can be accessed directly but in LL we will need to traverse to the middle which will take O(n) time hence beats the concept of O(log n) time of binary search
+10. sorting:  insertion sort and merge sort are Linked list friendly, we will learn more later
+
+so which is better? it depends on the requirements
+
+
+Student challenges:
+lec 226
+finding the middle node of a linked list
+we can do it by 2 methods:
+1. find the length, then halve it and reach the middle node by a for loop traversal
+this method will take 2 scans
+
+2. to do it in a single scan of the linked list, we will use tailing pointers
+one pointer p will move ahead by 1 node and q will move forward by 2 nodes, hence when q will reach NULL, p will reach the middle, since it has travelled half the distance of q
+This method has the same amount of pointer movement as the previous method, only difference being that the work is done in one loop iteration only
+code:
+
+p=q=first;
+while(q){
+    q=q->next;
+    if(q) q=q->next;
+    if(q) p=p->next;
+}
+
+time taken O(n) for both methods
+
+Student challenges 2:
+find intersection point of 2 singly linked lists
+
+code:
+
+p=first;
+while(p){
+    push(&stk1,p);
+}
+p=second;
+while(p){
+    push(&stk2,p);
+}
+while(stacktop(stk1)==stacktop(stk2)){
+    p=pop(&stk1);
+    pop(&stk2);
+}
+printf("%d",p->data); //intersection point
