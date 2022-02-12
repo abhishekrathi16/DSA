@@ -1,0 +1,320 @@
+------Stacks------
+
+Stacks are data structures which follow last in first out (LIFO) algo for insertion and deletion
+
+Its like a stack of books, you keep one book upon the other, and the newest book is on the top. Also while removing books, the topmost book(the book which was inserted at last) is removed first. Hence this is a stack of books.
+
+IN coding, While using recursion, the memory is used as stack. 
+As recursion can be transformed into iteration using loops, sometimes we need to use stack while converting recursion into iteration.
+
+ADT of stack:
+ADT contains the data representation and operations.
+Data:
+1. space for storing elements
+2. top pointer(points at the topmost)
+
+operations:
+1. push(x) - inserting a value into the stack at the top
+2. pop() - deletion/popping out the topmost element from the stack
+3. peek(index) - looking at a value at a given position
+4. stackTop() - checks the topmost value of the stack
+5. isEmpty() - checks if the stack is empty 
+6. isFull() - checks if stack is full 
+
+How can we implement a stack? using linked lists or arrays
+
+lec 232 
+implementation of stack using arrays
+We need a fixed size of the stack, say S=5
+And a pointer top which points at the last element entered 
+top at first points at index -1 of the array (ie, index -1 means that the pointer is not pointing any where in the array)
+
+Where does insertion and deletion takes place? 
+If we see an array, S[10|15|7| | ]
+where do we insert?
+if we insert at the position of 10, we will need to move all the elements by 1 index, which will mean that time taken will be O(n)
+So if we insert at the end, ie, after 7, it will take time O(1), hence this process is better
+
+code for defining a stack:
+
+struct Stack{
+    int size; //size of the stack
+    int Top; //top pointer
+    int *S; //array to be created dynamically
+};
+
+int main(){
+    struct Stack st;
+    printf("Enter the size of stack: ");
+    scanf("%d",&st.size); //size of the stack
+    st.S = new int[st.size];  //this is C++ code, use malloc for C
+    st.Top = -1; //assigning index -1 (outside the array) to the stack
+}
+
+
+condition for stack empty : top=-1
+so if there is no top in the stack, the stack is empty
+
+condition for stack full : top = size-1
+
+operations on a stack:
+
+1. push(x)
+
+initially top=-1 means that the stack is empty
+we do top++, top moves to index 0. Now insert a value by: 
+S[top]=x;
+
+Now do top++ again and insert value again. Keep doing this until you need or until top==size-1
+
+So before pushing, we need to check whether the stack has space for insertion or not
+code:
+
+void push(Stack *st, int x){
+    if(st->Top==st->size-1) //checking if the stack is full or not
+    {
+        printf("Stack overflow");
+    }else{
+        st->Top++;
+        st->S[st->Top]=x;
+    }
+}
+
+
+2. pop()
+when we pop the stack, a value is deleted from the array at the top position and the deleted value is printed or returned. We can delete until the stack is empty, and to check if the stack is empty or not, we will use top==-1
+Hence before deletion we also have to check if the stack is empty or not
+
+code:
+
+int pop(stack *st){
+    int x=-1;
+    if(st->Top==-1){
+        printf("Stack Underflow");
+    }else{
+        x=st->S[st->Top];
+        st->Top--;
+    }
+    return x;
+}
+
+Time taken for both psuhing and popping is O(1)
+
+3. peek(index)
+
+It finds an element at a given index
+Always remember that the top element is the first element. Hence index at the top indx is 0. This is different from the indices in the array, as we can see.
+Lets derive a formula for this:
+
+Pos         Index=Top-pos+1 
+1               3=3-1+1
+2               2=3-2+1
+3               1=3-3+1
+4               0=3-4+1
+
+code:
+int peek(Stack st,int pos){
+    //first check if position is valid or not
+    x=-1
+    if(st.Top-pos+1<0){
+        printf("Invalid Posn");
+    }else{
+        x=st.S[st.Top-pos+1];
+    }
+    return x;
+}
+
+Time taken here is also constant, O(1)
+
+4. stackTop() - lets us know the topmost value of the stack
+code:
+
+int stackTop(stack st){
+    if(st.Top==-1){
+        return -1;
+    }else{
+        return st.S[st.Top];
+    }
+}
+
+5. isEmpty() - checks if the stack is empty or not
+
+int isEmpty(stack st){
+    if(st.Top==-1){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+6. isFull() - checks if the stack is full or not
+
+int isFull(stack st){
+    if(st.Top==st.size-1){
+        return 1;
+    }else{
+        return 0;
+    }
+}
+
+
+all these operations take O(1) time
+
+
+
+-----implementation of stacks using linked lists-----
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+In a linked list, the insertion or deletion from the end takes O(n) time, and from the head position it takes O(1) time
+Hence here, the top will always be at the head Posn
+
+when we push an element, it will be same as insertion of elements at head
+when we pop an element, it will be same as deletion of elements at head
+both processes take O(1) time
+
+If Top==NULL, then stack is Empty, since there are no nodes
+
+how to check if stack is full?
+if we create a new node, and it doesnt get created, the heap is full, hence the stack is full
+
+Node *t = new Node;
+if(t==NULL){
+    stack is full
+}
+
+1. Push():
+
+code:
+void push(int x){
+    Node *t=new Node;
+    if(t==NULL){
+        printf("Stack overflow");
+    }else{
+        t->data=x;
+        t->next=Top;
+        Top=t;
+    }
+}
+
+
+2. pop():
+
+code:
+int pop(){
+    int x=-1;
+    if(top==NULL){
+        printf("Stack is empty");
+    }else{
+        p=Top;
+        Top=Top->next;
+        x=p->data;
+        free(p);
+    }
+    return x;
+}
+
+3. peek(index)
+
+we will need to return a value at a specific position
+here we will need to traverse the linked list to reach the specific position or until it bcms NULL
+hence this function takes time O(n)
+
+code:
+int peek(int pos){
+    int x=-1,i;
+    Node *p=Top;
+    for(i=0;p!=NULL && i<pos-1;i++){
+        p=p->next;
+    }
+    if(p!=NULL){
+        return p->data;
+    }else{
+        return -1;
+    }
+}
+
+4. isEmpty(): 
+code:
+
+int isEmpty(){
+    return Top? 0 : 1;
+}
+
+5. isFull():
+
+code:
+int isFull(){
+    Node *t=new Node;
+    int r=t?0:1;
+    return r;
+}
+
+
+
+-------APPLICATIONS OF STACKS--------
+
+1. Parenthesis matching - we want to check tht for every opening bracket(Parenthesis), there must be a closing bracket
+
+((a+b)*(c-d))
+we sacn through the expression by scanning one charecter/symbol at a time
+if it is a bracket(opening) we push it into a stack. All other charecters will be ignored (except closing brackets)
+
+if we get a closing bracket, pop ONE symbol from the stack
+after scanning through the entire expression, if the stack is empty, then the Parenthesis matching is true for the expression.
+
+if we have something like (((a+b)*(c-d)) , we will see that one symbol will be left which will not get popped. hence the matching will fail here.
+
+if there is an extra closing bracket like: ((a+b)*(c-d)))
+after popping all the brackets, if there is any closing bracket left which is not matching, the isEmpty will return true, hence matching will fail
+
+Note: This method only checks whether the expression has proper parenthesis matched or not. It does not depend on the fact that the expression is proper or not. For ex- in (a+)b(cd*) will pass the test bcz all parenthesis are matched
+
+code:
+
+int isBalance(char *exp){
+    struct Stack st; // we will need to initialize the stack
+    st.size=strlen(exp);  //we assume that the max number of brackets in the stack can be equal to the max number of charecters in the expression
+    //so the stack can have max size equal to the size of expression
+    st.top=-1;
+    st.S=new char[st.size];
+    int i;
+    for(i=0;exp[i]!='\0';i++){
+        if(exp[i]='(') push(&st,exp[i]);
+        else if(exp[i]==')'){
+            //we will need to check if the stack is empty or not
+            //if the stack is empty, we return false, since the expression doesnt have matching of parenthesis
+            if(isEmpty(st)) return false;
+            pop(&st);
+        }
+    }
+    return isEmpty(st)? true:false; //checking if anything is left in the stack or not, if there is symbols left, we return false
+}
+
+
+
+Student excercises:
+1. lets take an expression with all types of brackets
+
+This is same as paranthesis matching, but here, while popping, we will need to check if the closing bracket is a pair for the opening bracket of the same kind,ie, sq bracket closing for sq bracket opening, etc
+
+in case the brackets dont match, for ex:
+{([a+b)*[c-d])/e} here the opening sq bracket doesnt have its closing pair, we will need to check such cases and then handle them. 
+
+
+if(exp[i]=='{' || exp[i]=='(' || exp[i]=='['){
+    push(st,exp[i]);
+}
+if(exp[i]=='}' || exp[i]==')' || exp[i]==']'){
+    x=pop(st);
+}
+
+ASCII codes for the braces are:
+
+40 ), 41 (
+91 [, 93   ]
+123 {, 125  }
+
