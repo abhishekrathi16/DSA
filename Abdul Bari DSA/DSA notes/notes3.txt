@@ -52,7 +52,7 @@ example
 struct rectangle{
     int length;  //2 bytes of memory
     int breadth;  // 2 bytes of memory
-}
+};
 
 size of a struct is equal to the total memory consumed by its elements
 
