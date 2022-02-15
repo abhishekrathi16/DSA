@@ -1,0 +1,109 @@
+------QUEUES------
+
+queues are a logical data type which work on the principle FIFO
+for example - queues at a bus stop, or in a ticketing system online
+
+in queues, the insertion and deletion happen at different ends
+
+Quue ADT:
+data elements needed: 
+1. space to store elements
+2. front - for deletion
+3. rear - for insertion
+
+operations: 
+1. enqueue(x) - inserting element
+2. dequeue: deletion
+3. isEmpty(): to check if queue is empty 
+4. isFull(): to check if full 
+5. 
+6.
+
+We can implement a queue using arrays and LLs
+
+
+Implementation of queues using arrays using only one pointer :
+let size = 7
+we keep rear and front at index=-1 at first 
+when we add an element, we increment rear by 1
+(we first increment rear and then add element at A[rear])
+insert operation takes O(1)
+
+for deletion, we can delete the element at the first only 
+when we delete an element from a queue, we will need to shift the elements by 1 space forward...this will take O(n) time
+
+now lets see how we can decrease the time taken for deletion in a queue using 2 pointers method
+we take 2 pointers, rear and front and init them with -1
+
+when we want to insert an element, we will increase rear by 1 and insert element at A[rear]
+when deletion, we increment front by 1 and delete the element at A[front]
+This takes only O(1) time hence the task becomes a lot easier 
+
+hence enqueue - O(1) and dequeue - O(1)
+
+when we want to check if queue is empty, we check if front==rather
+
+when we want to check if queue is full we check if rear==size-1
+
+
+code to implement a queue-
+
+struct Queue{
+    int size;
+    int front;
+    int rear;
+    int *Q;
+};
+
+int main(){
+    struct Queue q;
+    printf("Enter the size: ");
+    scanf("%d",&q.size);
+    q.Q=(int *)malloc(q.size*sizeof(int));
+    q.front=q.rear=-1;
+}
+
+Enqueue function:
+code-
+
+void enqueue(Queue *q,int x){
+    if(q->rear==q->size-1)//checking if queue is full 
+    {
+        printf("Queue is full\n");
+    }else{
+        q->rear++;
+        q->Q[rear]=x;
+    }
+}
+
+Dequeue function:
+code - 
+
+int dequeue(Queue *q){
+    int x=-1;
+    if(q->front==q->rear){
+        printf("Queue is empty\n");
+    }else{
+        q->front++;
+        x=q->Q[q->front];
+    }
+    return x;
+}
+
+
+CIRCULAR QUEUES
+
+suppose we have a queue like this:
+
+Q[ , , ,8,10,6,9] here the rear points at the last element 9 and front points before 8
+here the rear is pointing at the last element of the queue, even though the queue has space we cant insert a new element into the queue since rear=size-1 here, which means that if rear is at the last point, we can come across 3 drawback conditions:
+
+1. we cant reuse space of deletd elements
+2. every location can be used only once, they cant be reused
+3. there may be a time when the queue is empty as well as full at the same time 
+
+we want to reuse the space, we can use a few solutions- 
+1. Resetting pointers: at any time if queue becomes empty, bring front and rear to -1 once again. But this method doesnt assure that the space will be reused at all, since, if the queue doesnt bcm empty ever, the rear pointer doesnt move at all, hence insertion of elements is still not possible. Hence this method cant be used. We will use circular queues instead
+
+2. circular queue:
+
