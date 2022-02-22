@@ -106,4 +106,130 @@ we want to reuse the space, we can use a few solutions-
 1. Resetting pointers: at any time if queue becomes empty, bring front and rear to -1 once again. But this method doesnt assure that the space will be reused at all, since, if the queue doesnt bcm empty ever, the rear pointer doesnt move at all, hence insertion of elements is still not possible. Hence this method cant be used. We will use circular queues instead
 
 2. circular queue:
+here we keep rear and front both at 0 initially
+say we add elements in the queue, keep increasing the value of rear by 1, and while deleting we decrease front value by 1
+(where ever we keep front, that index must be kept empty, bcz then rear will be equal to front and that will bcm the stack empty condition)
+if rear reaches the last empty index, and then we use it circularly, rear shifts to the first index in this case and hence the queue is circular
 
+we use the formula for circular values:
+rear = (rear+1)%size 
+
+Enqueue operation:
+void enqueue(struct Queue *q,int x){
+    if((q->Rear+1)%q->size == q->front){
+        printf("Queue is full)
+    }else{
+        q->Rear = (q->Rear)%q->size;
+        q->Q[q->Rear]=x;
+    }
+}
+
+Dequeue operation:
+
+int dequeue(struct Queue *q){
+    int x=-1;
+    if(q->front == q->rear){
+        printf("Queue is empty");
+    }else{
+        q->front=(q->front+1)%q->size;
+        x=q->Q[q->front];
+    }
+    return x;
+}
+
+
+Implementation of queues using Linked lists:
+we take a linked list and point front at the first node(head) and rear is pointed at the last node 
+When queue is empty, front and rear are NULL
+so, for Empty queue, condn is:
+if(front==NULL)
+
+if Queue is full, we can check it by:
+Node *t = new Node;
+if(t==NULL)  //ie when the heap memory overflows
+
+Enqueue operation:
+code:
+
+void Enqueue(int x){
+    Node *t = new Node;
+    if(t==NULL){
+        printf("Queue is full);
+    }else{
+        t->data=x;
+        t->next=NULL;
+        if(front==NULL) front=rear=t;
+        else{
+            rear->next=t;
+            rear=t;
+        }
+    }
+}
+
+Since we are using the rear pointer, the time taken is O(1)
+
+Dequeue operation:
+code:
+
+int dequeue(){
+    int x=-1;
+    Node *p;
+    if(front==NULL){
+        printf("Queue is empty");
+    }else{
+        p=front;
+        front=front->next;
+        x=p->data;
+        free(p);
+    }
+    return x;
+}
+
+
+----DE Queue----
+This means double ended queue. This doesnt follow the rules of FIFO. and here front and rear both can be used in order to insertion and deletion
+
+There are 2 types of DE Queue: i/p restricted and o/p restricted 
+in i/p restricted DE Queue - we use only rear for insertion, here front can be used fr deletion only
+
+in o/p restricted DE QUEUE: we use only front to delete elements in the queue
+
+-----PRIORITY QUEUES-----
+1. Limited set of priorities
+2. Element priority
+
+Some OS support priorities based queues and threads 
+Whichever operation has higher priority will get executed first 
+
+We have elements and priorities like this:
+Element ->  A B C D E F G H I J
+priority -> 1 1 2 3 2 1 2 3 2 2
+We take 3 priority queues:
+Q1 : [,,B,F,,]
+Q2: [C,E,G,I,J,]
+Q3: [D,H,,,,,]
+
+whenever we delete, we delete the elements from the highest priority queue, ie Q1, first 
+If that queue is empty, we will delete from 2nd priority queue 
+
+Lets look at a queue in which every element has its own priority
+
+Elements: 6,8,3,10,15,2,9,17,5,8 
+(smaller number, bigger priority)
+We dont use FIFO here 
+we can create the queue in 2 methods:
+1. Insert in same order in which they come in, delete the max priority by searching it
+2. Insert in priority order and delete one by one 
+
+for 1st method, insertion takes O(1) time 
+For deletion, we will need to delete the element of highest priority, hence we will need to find the minimum element, this will take O(n) time. Search -> O(n), shift -> O(n)
+
+for 2nd method, we insert in the sorted order, hence it takes O(n) to search and sort the elements and shift them. deletion takes O(1) time 
+
+
+----- Implementation of Queue using 2 stacks -----
+we take stacks S1, S2
+say our elements are: 6,3,9,5,4,2,8,12,10
+when we want to enqueue, we will push the element in S1 
+Now to dequeue, we pop all elements and push them in S2 one by one and then delete the topmost element of S2 
+We dont re-push these elements into S1 again. Here we will keep pushing in S1 and if there is a request for dequeue, we pop the topmost element of S2 
