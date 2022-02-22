@@ -233,3 +233,21 @@ say our elements are: 6,3,9,5,4,2,8,12,10
 when we want to enqueue, we will push the element in S1 
 Now to dequeue, we pop all elements and push them in S2 one by one and then delete the topmost element of S2 
 We dont re-push these elements into S1 again. Here we will keep pushing in S1 and if there is a request for dequeue, we pop the topmost element of S2 
+
+void enqueue(int x){
+    push(&s1,x);
+}
+int dequeue(){
+    int x=-1;
+    if(isEmpty(s2)){
+        if(isEmpty(S1)){
+            printf("Queue empty");
+            return x;
+        }else{
+            while(!isEmpty(S1)){
+                push(&s2,pop(&s1));
+            }
+        }
+        return pop(&s2;)
+    }
+}
