@@ -1,0 +1,86 @@
+lec 267
+
+------- TREES ------
+Terminology of TREES
+Tree is a collection of nodes and edges 
+If there are n nodes, there will be n-1 edges 
+All nodes  have an edge coming from a parent, except the root node 
+
+1. Root - the very top node or the first node is a root node 
+2. parent - a node is a parent if it has one or more coming out from it 
+3. children - nodes below a parent, connected to them are the children nodes 
+4. siblings - all nodes which have a common parent node 
+5. descendant - all nodes emerging from a node are descendant nodes 
+6. degree of a node - the number of direct children of a node is its degree 
+7. ancestors - all nodes which are parents of a parent node and above them are ancestors
+8. internal/extrenal nodes - non leaf nodes are internal nodes (they have degree>0), all nodes having degree=0 are leaf nodes/external nodes 
+8. levels - nth node from the root node(starting at 1) is the level of a node 
+9. height of a tree - level-1 is the height
+10. forest - a collection of trees is a forest
+
+Binary tree - a tree in which all nodes(except leaf nodes) have a degree 2 or less 
+deg(T) = 2
+children={0,1,2}
+
+
+Number of binary trees for a given number of nodes :
+1. unlabelled nodes - they dont have a label like A,B,C etc 
+
+Number of Binary trees possible = Catalan number = T(n)=(2nCn)/(n+1)
+number of trees with max height = 2^(n-1)
+[see easier formula to calculate Catalan number in copy]
+
+2. labelled nodes - here the nodes are labelled 
+T(n) = (2nCn/(n+1))*n!
+
+Height vs Nodes 
+if height of a tree is given, what are no. of nodes(max and min)? and vice  versa ?
+
+min nodes = n = h+1 
+max nodes = n = 2^(h+1)-1
+
+if nodes are given, 
+number of height when,
+minimum height = h = n-1
+max height = h = log(n+1)-1
+
+height of a binary tree:
+log(n+1)-1 <= h <= n-1 
+O(logn)            O(n)
+
+
+Reln for leaf(deg 0) nodes and nodes with deg 2 : deg(0)=deg(2)+1 
+
+Strict binary tree:
+also called strict/proper/complete binary trees 
+in a general BT, a node can have {0,1,2} children nodes 
+in a strict BT a node can have either 0 or 2 children only 
+
+in a strict BT, nodes if height is given, 
+max nodes = 2^(h+1)-1
+min nodes = 2h+1
+
+if no of nodes are given, 
+max height = h = (n-1)/2
+min height = h = log(n)-1
+
+log(n)-1 <= h <= (n-1)/2
+O(logn)           O(n)
+
+
+Internal(i) vs External(e) nodes:
+e=i+1
+
+---- n-ary trees ----
+n here is the degree of a trees 
+in a n ary tree, we mean that every node in that tree can have no. of children(degree) = {0,1,2,3,...n-1,n} and not more than n 
+
+hence all nodes of a n-ary tree will have the capacity of having a degree of n (p.s. that it doesnt mean that every node needs to have n number of nodes, it can even have less than that but cant have greater than n)
+
+Strict n-ary tree means that each node will have children = 0 or n 
+
+number of nodes present in a n-ary tree if height is given:
+min no. of nodes = n*h+1 
+max no. of nodes = (m^(h+1)-1)/(m-1)
+
+no. of external nodes vs internal nodes 

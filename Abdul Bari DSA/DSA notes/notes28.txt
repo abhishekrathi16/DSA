@@ -1,0 +1,61 @@
+lec 276
+
+----- Binary Trees -----
+Representation of Binary Trees
+->Array Representation
+->LL Representation
+
+Array Representation of BT
+We know arrays in C/C++ start from index 0 but here we will have them start from 1st index 
+To store the elements we need to store the elements and the relationship btwn the elements(parent child relationship)
+
+We store the elements level by level in the array so the array becomes [A,B,C,D,E,F,G](see copy)
+Now we try to establish the relationship for the elements. (see copy)
+We can see that if an element is at index i, then its left child is at index 2i and right child is at index 2i+1
+Parent of any node will be at floor(i/2)
+
+
+Linked Representation of BT
+We will use Nodes of linked list here
+These nodes are same as that of DLL for right child and left child
+
+struct Node{
+    struct Node* lchild;
+    int data;
+    struct Node* rchild;
+}
+
+remember that this Representation in form of a linked list is a little complex since the tree is a non linear structure and ll are linear.
+see copy
+
+We will create this dyanmically so we will need to create it in Heap
+
+There are n nodes(here n=7). There are 8 null pointers(since the leaf nodes dont have children). So for n nodes we will have n+1 null pointers.
+This is similar to e=i+1(external nodes = internal nodes+1 for strict BT).
+
+
+
+-----Full Binary Tree and Complete Binary Tree-----
+Full BT - a Binary tree of height h having maximum no. of nodes is full BT.
+A tree of height h can have max nodes n = 2^(h+1)-1
+Any increase in no. of nodes will cause an increase in the height of the BT.
+
+Complete BT - when we represent a BT in an array, if there are any blank spaces in btwn elements, then the BT is not complete. (See copy)
+A complete BT of height h will be a full BT upto h-1 height and in the last level the elements will be filled from left to right without skipping any children.(if any missing elements are encountered then it is not a complete BT).
+All full BT are complete BT. But vice versa is not necessarily true.
+
+
+-----Strict vs Complete BT-----
+Strict BT is also called a perfect BT. Elements in this tree have either 0 degree or degree 2(ie, either no children or 2 children). 
+Complete BT means when represented in the array there should not be any blank spaces in btwn the elements.
+In some books we can come across definitions where strict BT are called complete BT and complete BT are called almost complete BT. 
+
+
+---- Tree Traversals ----
+If the DS is linear, we can traverse it in 2 manners - first to last(forward), last to first(backwards)
+But for non linear we have methods - Preorder, postorder, inorder and level order
+
+Preorder - visit(node), preorder(left subtree), preorder(right subtree)
+Inorder - inorder(left).visit(node),inorder(right)
+postorder - postorder(left),postorder(right),visit(node)
+level order - level by level
